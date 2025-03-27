@@ -1,3 +1,4 @@
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -31,6 +32,9 @@ class DataModel(Base):
     favorite_restaurants: Mapped[str]
     cuisine_choices: Mapped[str]
     restaurant_factors: Mapped[str]    
+
+    def __repr__(self):
+        return f"DataModel(id: {self.id} gender: {self.gender} age: {self.age})"
 
 
 class DataMapping:
@@ -72,9 +76,35 @@ class Cuisine(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     cuisine: Mapped[str]
-
+    
+    def __repr__(self):
+        return f"Cuisine(id: {self.id} cuisine: {self.cuisine})"
+    
 class RestaurantFactors(Base):
     __tablename__ = "restaurant_factors"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     factor: Mapped[str]
+
+    def __repr__(self):
+        return f"Cuisine(id: {self.id} factor: {self.factor})"
+
+
+class RespondentCuisine(Base):
+    __tablename__ = "respondent_cuisine"
+
+    respondent_id: Mapped[int] = mapped_column(ForeignKey("data.id"), primary_key=True)
+    cuisine_id: Mapped[int] = mapped_column(ForeignKey("cuisine.id"), primary_key=True)
+
+    def __repr__(self):
+        return f"RespondentCuisine(respondent_id: {self.respondent_id} cuisine_id: {self.cuisine_id})"
+
+class RespondentRestFactor(Base):
+    __tablename__ = "respondent_restaurant_factor"
+
+
+    respondent_id: Mapped[int] = mapped_column(ForeignKey("data.id"), primary_key=True)
+    factor_id: Mapped[int] = mapped_column(ForeignKey("restaurant_factors.id"), primary_key=True)
+
+    def __repr__(self):
+        return f"RespondentRestFactor(respondent_id: {self.respondent_id} factor_id: {self.factor_id})"

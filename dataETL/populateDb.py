@@ -1,5 +1,6 @@
 import re
-from dataETL.dataModel import DataModel, Cuisine, RestaurantFactors
+from sqlalchemy import select
+from dataETL.dataModel import DataModel, Cuisine, RestaurantFactors, RespondentCuisine, RespondentRestFactor
 from sqlalchemy.orm import Session
 
 def format_strings(testString):
@@ -132,5 +133,38 @@ def insert_restaurant_factors(engine):
         f = RestaurantFactors(factor = factor)
         insert_list.append(f)
     with Session(engine) as session:
-         session.add_all(insert_list)
-         session.commit()
+        session.add_all(insert_list)
+        session.commit()
+
+def create_relations(engine):
+    with Session(engine) as session:
+
+        cuisine_dict = {}
+        cuisine_select_all = select(Cuisine)
+        for cuisine in session.scalars(cuisine_select_all):
+            cuisine_dict[cuisine.cuisine] = cuisine.id
+
+        rest_factors_dict = {}
+        restaurant_factor_select_all = select(RestaurantFactors)
+        for rf in session.scalars(restaurant_factor_select_all):
+            rest_factors_dict[rf.factor] = rf.id
+
+
+        insert_list_cuisine = []
+        insert_list_rf = []
+        stmt = select(DataModel)
+        for respondent in session.scalars(stmt):
+        # print(respondent.cuisine_choices)
+            cuisine_list = respondent.cuisine_choices.split(",")
+            for cuisine in cuisine_list:
+                c_id = cuisine_dict[cuisine.strip()]
+                insert_list_cuisine.append(RespondentCuisine(respondent_id = respondent.id, cuisine_id = c_id))
+        
+            restaurant_factor_list = respondent.restaurant_factors.split(",")
+            for rf in restaurant_factor_list:
+                rf_id = rest_factors_dict[rf.strip().replace("\n", "")]
+                insert_list_rf.append(RespondentRestFactor(respondent_id = respondent.id, factor_id = rf_id))
+
+        session.add_all(insert_list_cuisine)
+        session.add_all(insert_list_rf)
+        session.commit

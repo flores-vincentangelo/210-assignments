@@ -1,6 +1,3 @@
-import os
-
-from sqlalchemy import create_engine
 from dataETL.dataModel import Base
 
 def create_tables(engine):
