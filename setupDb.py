@@ -1,6 +1,6 @@
 import os
 from sqlalchemy import MetaData, Table, create_engine
-from dataETL.dbOrm import create_db_create_tables
+from dataETL.dbOrm import create_tables
 from dataETL.populateDb import populate_db
 from dataETL.dataModel import DataModel
 
@@ -13,5 +13,5 @@ data = Table(
 )
 
 data.drop(engine, checkfirst=True)
-create_db_create_tables(engine)
+create_tables(engine)
 populate_db(engine)

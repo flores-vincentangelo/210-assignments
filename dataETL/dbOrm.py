@@ -1,8 +1,8 @@
 import os
 
 from sqlalchemy import create_engine
-from dataModel import Base
+from dataETL.dataModel import Base
 
-engine = create_engine(f"sqlite:///./{os.environ["DB_NAME"]}", echo=True)
-
-Base.metadata.create_all(engine)
+def create_tables(engine):
+    # makes table based on data Model
+    Base.metadata.create_all(engine)
