@@ -31,3 +31,50 @@ class DataModel(Base):
     favorite_restaurants: Mapped[str]
     cuisine_choices: Mapped[str]
     restaurant_factors: Mapped[str]    
+
+
+class DataMapping:
+    
+    hc_dict = {
+        1: "Very health conscious",
+        2: "Somewhat health conscious",
+        3: "Not health conscious"
+    }
+    
+    frequency_1 = {
+        1 : "all meals every day",
+        2 : "1 - 2 times per day",
+        3 : "3 - 6 times per week",
+        4 : "1 - 2 times per week",
+        5 : "Once every two weeks",
+        6 : "Once a month",
+        7 : "Occasionally/rarely"
+    }
+
+    frequency_2 = {
+        1 : "Once a week",
+        2 : "Twice a month",
+        3 : "Once a month",
+        4 : "No definite frequency"
+    }
+
+    def health_consciousness(self,num):
+        return self.hc_dict[num]
+    
+    def frequency_1(self, num):
+        return self.frequency_1[num]
+    
+    def frequency_2(self, num):
+        return self.frequency_2(num)
+
+class Cuisine(Base):
+    __tablename__ = "cuisine"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    cuisine: Mapped[str]
+
+class RestaurantFactors(Base):
+    __tablename__ = "restaurant_factors"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    factor: Mapped[str]

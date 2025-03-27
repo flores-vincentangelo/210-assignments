@@ -1,8 +1,6 @@
 import re
-import os
-from dataETL.dataModel import DataModel
+from dataETL.dataModel import DataModel, Cuisine, RestaurantFactors
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
 
 def format_strings(testString):
         return testString.replace("\"", "")
@@ -17,6 +15,11 @@ def format_ints(testString):
         return int(testString)
 
 def populate_db(engine):
+    insert_dataset(engine)
+    insert_cuisine_choices(engine)
+    insert_restaurant_factors(engine)
+
+def insert_dataset(engine):
     insertList = []
     with open("dataset-partially-cleaned.csv", "r") as f:
         for line in f:
@@ -73,7 +76,61 @@ def populate_db(engine):
 
             insertList.append(data)
 
-    # engine = create_engine(f"sqlite:///./{os.environ["DB_NAME"]}", echo=True)
     with Session(engine) as session:
          session.add_all(insertList)
+         session.commit()
+
+cuisine_list = [
+    "Asian",
+    "Filipino",
+    "Korean",
+    "Japanese",
+    "Mexican",
+    "Thai",
+    "Vietnamese",
+    "Middle Eastern",
+    "Indian",
+    "Persian",
+    "American",
+    "Vegetarian",
+    "European",
+    "Italian",
+    "Greek",
+    "Other",
+]
+
+def insert_cuisine_choices(engine):
+    insert_list = []
+    for cuisine in cuisine_list:
+        c = Cuisine(cuisine = cuisine)
+        insert_list.append(c)
+
+    with Session(engine) as session:
+         session.add_all(insert_list)
+         session.commit()
+
+factors_list = [
+    "Instagrammability/Aesthetic",
+    "Food Taste",
+    "Cost",
+    "Accessibility",
+    "Occasion",
+    "Menu Variety",
+    "Healthy Options",
+    "Promos",
+    "Brand",
+    "Pet Accommodation",
+    "Ability to accommodate dietary restrictions",
+    "Social Media/Reviews",
+    "Experience",
+    "Other", 
+]
+
+def insert_restaurant_factors(engine):
+    insert_list = []
+    for factor in factors_list:
+        f = RestaurantFactors(factor = factor)
+        insert_list.append(f)
+    with Session(engine) as session:
+         session.add_all(insert_list)
          session.commit()
