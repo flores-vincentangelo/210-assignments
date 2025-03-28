@@ -1,0 +1,214 @@
+{
+    "gender": {
+        "Female": {
+            "total": 25
+        },
+        "Male": {
+            "total": 25
+        }
+    },
+    "relationship_status": {
+        "Married": {
+            "total": 13
+        },
+        "Married but not living together": {
+            "total": 1
+        },
+        "Single": {
+            "total": 36
+        }
+    },
+    "employment_status": {
+        "Full time (Government Sector)": {
+            "total": 2
+        },
+        "Full time (Private Sector)": {
+            "total": 40
+        },
+        "Self-employed": {
+            "total": 1
+        },
+        "Unemployed": {
+            "total": 7
+        }
+    },
+    "monthly_income": {
+        "10,000 and below": {
+            "total": 4
+        },
+        "10,001 - 25,000": {
+            "total": 3
+        },
+        "100,000 and above": {
+            "total": 4
+        },
+        "25,001 - 40,000": {
+            "total": 16
+        },
+        "40,001 - 55,000": {
+            "total": 9
+        },
+        "55,001 - 70,000": {
+            "total": 9
+        },
+        "70,001 - 85,000": {
+            "total": 2
+        },
+        "85,001 - 100,000": {
+            "total": 3
+        }
+    },
+    "health_consciousness": {
+        "1": {
+            "total": 3
+        },
+        "2": {
+            "total": 42
+        },
+        "3": {
+            "total": 5
+        }
+    },
+    "pet_ownership": {
+        "I don't own a cat/dog": {
+            "total": 15
+        },
+        "I own a cat/dog and bring them when I eat out if I feel like it": {
+            "total": 4
+        },
+        "I own a cat/dog but I DON'T bring them when I eat out": {
+            "total": 31
+        }
+    },
+    "housing_type": {
+        "Condo": {
+            "total": 1
+        },
+        "Dormitory": {
+            "total": 3
+        },
+        "Living with Relatives (not with parents/siblings)": {
+            "total": 4
+        },
+        "Living with parents/siblings": {
+            "total": 18
+        },
+        "Own House": {
+            "total": 13
+        },
+        "Renting": {
+            "total": 11
+        }
+    },
+    "primary_cook": {
+        "I don't cook": {
+            "total": 15
+        },
+        "No, but I can cook": {
+            "total": 26
+        },
+        "Yes": {
+            "total": 9
+        }
+    },
+    "preferred_dining": {
+        "Eating out at Casual Dining Restaurants": {
+            "total": 8
+        },
+        "Eating out at Fast Food Restaurant": {
+            "total": 2
+        },
+        "Eating out at Fine Dining Restaurants": {
+            "total": 1
+        },
+        "Food Delivery": {
+            "total": 4
+        },
+        "Home-Cooked Meals": {
+            "total": 35
+        }
+    },
+    "frequency_eating_out": {
+        "1": {
+            "total": 2
+        },
+        "2": {
+            "total": 6
+        },
+        "3": {
+            "total": 8
+        },
+        "4": {
+            "total": 19
+        },
+        "5": {
+            "total": 6
+        },
+        "6": {
+            "total": 3
+        },
+        "7": {
+            "total": 6
+        }
+    },
+    "frequency_takeout_delivery": {
+        "1": {
+            "total": 3
+        },
+        "2": {
+            "total": 2
+        },
+        "3": {
+            "total": 12
+        },
+        "4": {
+            "total": 10
+        },
+        "5": {
+            "total": 15
+        },
+        "6": {
+            "total": 1
+        },
+        "7": {
+            "total": 7
+        }
+    },
+    "frequency_cook_home": {
+        "1": {
+            "total": 16
+        },
+        "2": {
+            "total": 12
+        },
+        "3": {
+            "total": 6
+        },
+        "4": {
+            "total": 5
+        },
+        "5": {
+            "total": 1
+        },
+        "6": {
+            "total": 2
+        },
+        "7": {
+            "total": 8
+        }
+    },
+    "frequency_grocery": {
+        "1": {
+            "total": 11
+        },
+        "2": {
+            "total": 21
+        },
+        "3": {
+            "total": 10
+        },
+        "4": {
+            "total": 8
+        }
+    }
+}
