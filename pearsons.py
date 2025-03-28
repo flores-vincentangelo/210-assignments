@@ -7,6 +7,7 @@ from scipy.stats import chi2_contingency
 import numpy as np
 import matplotlib.pyplot as plt 
 import pandas as pd
+import json
 
 engine = create_engine(f"sqlite:///./{os.environ["DB_NAME"]}", echo=True)
 
@@ -126,7 +127,7 @@ def get_attr_values(engine):
                     "total": result_tuple[1]
                 } 
                 print(result_tuple)
-    print(categorical_dict_counts)
+    return categorical_dict_counts
 
 def chi_square(engine, att1, att2):
     chi_square_dict = {}
@@ -144,4 +145,6 @@ def chi_square(engine, att1, att2):
 # chi_square(engine, categorical_dict["gender"], categorical_dict["relationship_status"])
 # data_dict = get_data(engine)
 # pearsons(data_dict)
-get_attr_values(engine)
+categorical_dict_counts = get_attr_values(engine)
+with open("categorical_attr.json", "w") as f:
+    f.write(json.dumps(categorical_dict_counts))
