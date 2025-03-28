@@ -1,6 +1,6 @@
 import re
 from sqlalchemy import select
-from dataETL.dataModel import DataModel, Cuisine, RestaurantFactors, RespondentCuisine, RespondentRestFactor
+from dataETL.dataModel import Respondents, Cuisine, RestaurantFactors
 from sqlalchemy.orm import Session
 
 def format_strings(testString):
@@ -16,11 +16,11 @@ def format_ints(testString):
         return int(testString)
 
 def populate_db(engine):
-    insert_dataset(engine)
     insert_cuisine_choices(engine)
     insert_restaurant_factors(engine)
+    insert_respondents(engine)
 
-def insert_dataset(engine):
+def insert_respondents(engine):
     insertList = []
     with open("dataset-partially-cleaned.csv", "r") as f:
         for line in f:
@@ -47,10 +47,11 @@ def insert_dataset(engine):
             frequency_cook_home = result[17]
             frequency_grocery = result[18]
             favorite_restaurants = result[19]
+
             cuisine_choices = result[20]
             restaurant_factors  = result[21]
 
-            data = DataModel(
+            data = Respondents(
             time_stamp = time_stamp,
             gender = format_strings(gender),
             age = format_ints(age),
@@ -71,8 +72,8 @@ def insert_dataset(engine):
             frequency_cook_home = format_ints(frequency_cook_home),
             frequency_grocery = format_ints(frequency_grocery),
             favorite_restaurants = format_strings(favorite_restaurants),
-            cuisine_choices = format_strings(cuisine_choices),
-            restaurant_factors = format_strings(restaurant_factors)
+            # cuisine_choices = format_strings(cuisine_choices),
+            # restaurant_factors = format_strings(restaurant_factors)
         )
 
             insertList.append(data)
@@ -136,35 +137,35 @@ def insert_restaurant_factors(engine):
         session.add_all(insert_list)
         session.commit()
 
-def create_relations(engine):
-    with Session(engine) as session:
+# def create_relations(engine):
+    # with Session(engine) as session:
 
-        cuisine_dict = {}
-        cuisine_select_all = select(Cuisine)
-        for cuisine in session.scalars(cuisine_select_all):
-            cuisine_dict[cuisine.cuisine] = cuisine.id
+    #     cuisine_dict = {}
+    #     cuisine_select_all = select(Cuisine)
+    #     for cuisine in session.scalars(cuisine_select_all):
+    #         cuisine_dict[cuisine.cuisine] = cuisine.id
 
-        rest_factors_dict = {}
-        restaurant_factor_select_all = select(RestaurantFactors)
-        for rf in session.scalars(restaurant_factor_select_all):
-            rest_factors_dict[rf.factor] = rf.id
+    #     rest_factors_dict = {}
+    #     restaurant_factor_select_all = select(RestaurantFactors)
+    #     for rf in session.scalars(restaurant_factor_select_all):
+    #         rest_factors_dict[rf.factor] = rf.id
 
 
-        insert_list_cuisine = []
-        insert_list_rf = []
-        stmt = select(DataModel)
-        for respondent in session.scalars(stmt):
-        # print(respondent.cuisine_choices)
-            cuisine_list = respondent.cuisine_choices.split(",")
-            for cuisine in cuisine_list:
-                c_id = cuisine_dict[cuisine.strip()]
-                insert_list_cuisine.append(RespondentCuisine(respondent_id = respondent.id, cuisine_id = c_id))
+    #     insert_list_cuisine = []
+    #     insert_list_rf = []
+    #     stmt = select(DataModel)
+    #     for respondent in session.scalars(stmt):
+    #     # print(respondent.cuisine_choices)
+    #         cuisine_list = respondent.cuisine_choices.split(",")
+    #         for cuisine in cuisine_list:
+    #             c_id = cuisine_dict[cuisine.strip()]
+    #             insert_list_cuisine.append(RespondentCuisine(respondent_id = respondent.id, cuisine_id = c_id))
         
-            restaurant_factor_list = respondent.restaurant_factors.split(",")
-            for rf in restaurant_factor_list:
-                rf_id = rest_factors_dict[rf.strip().replace("\n", "")]
-                insert_list_rf.append(RespondentRestFactor(respondent_id = respondent.id, factor_id = rf_id))
+    #         restaurant_factor_list = respondent.restaurant_factors.split(",")
+    #         for rf in restaurant_factor_list:
+    #             rf_id = rest_factors_dict[rf.strip().replace("\n", "")]
+    #             insert_list_rf.append(RespondentRestFactor(respondent_id = respondent.id, factor_id = rf_id))
 
-        session.add_all(insert_list_cuisine)
-        session.add_all(insert_list_rf)
-        session.commit
+    #     session.add_all(insert_list_cuisine)
+    #     session.add_all(insert_list_rf)
+    #     session.commit
