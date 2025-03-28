@@ -45,8 +45,14 @@ class Respondents(Base):
     favorite_restaurants: Mapped[str]
     cuisine_choices_str: Mapped[str]
     restaurant_factors_str: Mapped[str]  
-    cuisine_choices: Mapped[List["Cuisine"]] = relationship(argument="Cuisine", secondary=respondent_cuisine)
-    restaurant_factors: Mapped[List["RestaurantFactors"]] = relationship(argument="RestaurantFactors", secondary=respondent_restaurant_factors)
+    cuisine_choices: Mapped[List["Cuisine"]] = relationship(
+        argument="Cuisine", 
+        secondary=respondent_cuisine, 
+        back_populates="respondents")
+    restaurant_factors: Mapped[List["RestaurantFactors"]] = relationship(
+        argument="RestaurantFactors", 
+        secondary=respondent_restaurant_factors, 
+        back_populates="respondents")
 
     def __repr__(self):
         return f"Respondents(id: {self.id} gender: {self.gender} age: {self.age})"
@@ -90,6 +96,7 @@ class Cuisine(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     cuisine: Mapped[str]
+    respondents: Mapped[List["Respondents"]] = relationship(secondary=respondent_cuisine, back_populates="cuisine_choices")
     
     def __repr__(self):
         return f"Cuisine(id: {self.id} cuisine: {self.cuisine})"
@@ -99,6 +106,7 @@ class RestaurantFactors(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     factor: Mapped[str]
+    respondents: Mapped[List["Respondents"]] = relationship(secondary=respondent_restaurant_factors, back_populates="restaurant_factors")
 
     def __repr__(self):
         return f"Cuisine(id: {self.id} factor: {self.factor})"
