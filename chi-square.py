@@ -48,6 +48,8 @@ def prepare_attr_mapping(engine, categorical_attributes_list):
         for attr2 in column_attr_list:
             if attr1 == attr2:
                 continue
+            if attr2 in categorical_attr_mappings:
+                continue
             categorical_attr_mappings[attr1][attr2] = {}
             for value1 in column_attr_values_dict[attr1]:
                 categorical_attr_mappings[attr1][attr2][value1] = {}
@@ -55,7 +57,7 @@ def prepare_attr_mapping(engine, categorical_attributes_list):
                     categorical_attr_mappings[attr1][attr2][value1][value2] = 0
     return categorical_attr_mappings
 
-def get_other_totals(engine, categorical_attributes_list):
+def get_totals(engine, categorical_attributes_list, categorical_attr_mappings):
     
     mapper = inspect(Respondents)
     filepath = "categorical_attr_mappings.txt"
@@ -73,16 +75,18 @@ def get_other_totals(engine, categorical_attributes_list):
                 group_by = select(column_attr, column_attr2, func.count(column_attr).label("count")).group_by(column_attr).group_by(column_attr2)
                 with Session(engine) as session:
                     for result_tuple in session.execute(group_by):
-                        # if ((column_attr.key == "gender" and column_attr2.key == "relationship_status") or (column_attr.key == "relationship_status" and column_attr2.key == "gender")):
                         x = f"{column_attr.key} {column_attr2.key} {result_tuple}"
-                        print(x)
-                        f.write(f"{x}\n")
+                        if column_attr2.key in categorical_attr_mappings[column_attr.key]:
+                            categorical_attr_mappings[column_attr.key][column_attr2.key][result_tuple[0]][result_tuple[1]] = result_tuple[2]
+                            f.write(f"{x}\n")
+    
+    return categorical_attr_mappings
 
 
 categorical_attr_mappings = prepare_attr_mapping(engine, categorical_attributes_list)
+categorical_attr_mappings = get_totals(engine, categorical_attributes_list, categorical_attr_mappings)
 with open("categorical_attr.json", "w") as f:
     f.write(json.dumps(categorical_attr_mappings))
-get_other_totals(engine, categorical_attributes_list, categorical_attr_mappings)
 
 def chi_square(array):
     critical_value_dict = {
@@ -93,16 +97,16 @@ def chi_square(array):
         5: 11.070
     }
 
-    obs = np.array([[7, 6 ],[1,0], [17, 19]])
+    obs = np.array([[7, 1, 17 ],[6, 0, 19]]) # 1.188034188034188
     res = chi2_contingency(obs, correction=False)
-    res.statistic
+    print(f"statistic {res.statistic}")
     res.pvalue
-    res.dof
+    print(f"dof {res.dof}")
     res.expected_freq
     if res.statistic > critical_value_dict[res.dof]:
-        print("reject null hypothesis")
+        print("reject null hypothesis i.e. values are related")
     else:
-        print("accept null hypothesis")
+        print("accept null hypothesis i.e. values are unrelated")
     print("done")
 
 chi_square([])
