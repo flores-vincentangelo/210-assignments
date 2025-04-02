@@ -12,16 +12,16 @@ categorical_attributes_list = [
     "gender",
     "relationship_status",
     "employment_status",
-    "monthly_income",
+    # "monthly_income",
     "pet_ownership",
     "housing_type",
     "primary_cook",
     "preferred_dining",
-    "health_consciousness",
-    "frequency_eating_out",
-    "frequency_takeout_delivery",
-    "frequency_cook_home",
-    "frequency_grocery",
+    # "health_consciousness",
+    # "frequency_eating_out",
+    # "frequency_takeout_delivery",
+    # "frequency_cook_home",
+    # "frequency_grocery",
 ]
 
 def prepare_attr_mapping(engine, categorical_attributes_list):
@@ -204,6 +204,7 @@ def chi_square(array):
 
 def chi_square_analysis(cat_att_maps):
     chi_square_dict = {}
+    attr_chi_square_list = []
     for attr1 in cat_att_maps.keys():  
         if cat_att_maps[attr1].keys() == 0:
             continue
@@ -223,10 +224,17 @@ def chi_square_analysis(cat_att_maps):
                 "dof": dof,
                 "null_hypothesis": null_hypothesis
             }
+
+            attr_chi_square_list.append({
+                "attributes": [attr1, attr2],
+                "dof": dof,
+                "statistic": round(statistic, 5),
+                "null_hypothesis": null_hypothesis
+            })
             if (null_hypothesis == "Reject. Values related"):
                 print(f"{attr1} {attr2} are related!")
     
-    return chi_square_dict
+    return (chi_square_dict, attr_chi_square_list)
 
         
             
@@ -235,7 +243,12 @@ categorical_attr_mappings = prepare_attr_mapping(engine, categorical_attributes_
 categorical_attr_mappings = get_totals(engine, categorical_attributes_list, categorical_attr_mappings)
 with open("categorical_attr.json", "w") as f:
     f.write(json.dumps(categorical_attr_mappings))
-chi_square_dict = chi_square_analysis(categorical_attr_mappings)
+(chi_square_dict, chi_square_list) = chi_square_analysis(categorical_attr_mappings)
 with open("chi_square_dict.json", "w") as f:
     f.write(json.dumps(chi_square_dict))
+def sorting_function(obj):
+    return obj["statistic"]
+chi_square_list.sort(key=sorting_function)
+with open("attr_chi_square_list.json", "w") as f:
+    f.write(json.dumps(chi_square_list))
 

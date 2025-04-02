@@ -1,4 +1,5 @@
 import re
+import os
 from sqlalchemy import select
 from dataETL.dataModel import Respondents, Cuisine, RestaurantFactors
 from sqlalchemy.orm import Session
@@ -23,7 +24,7 @@ def populate_db(engine):
 
 def insert_respondents_no_cuisinsine_and_res_factors(engine):
     insertList = []
-    with open("dataset-partially-cleaned.csv", "r") as f:
+    with open(os.environ["DATA_SOURCE"], "r") as f:
         for line in f:
             pattern = r',(?=(?:[^"]*"[^"]*")*[^"]*$)'
             result = re.split(pattern,line)
