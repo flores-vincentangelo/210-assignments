@@ -99,9 +99,14 @@ for obj in pearsons_list:
 def sorting_function(obj):
     return obj["statistic"]
 pearsons_list.sort(key=sorting_function, reverse=True)
-with open("attr_pearsons_list.json", "w") as f:
+
+analysis_path = "analysis/pearsons"
+if not os.path.exists(analysis_path):
+        os.makedirs(analysis_path)
+
+with open(f"{analysis_path}/attr_pearsons_list.json", "w") as f:
     f.write(json.dumps(pearsons_list))
-with open("pearsons_list.csv", "w") as f:
+with open(f"{analysis_path}/pearsons_list.csv", "w") as f:
     f.write(f"Attribute 1,Attribute 2,Correlation Coefficient,Rank\n")
     count = 1
     for obj in pearsons_list:
