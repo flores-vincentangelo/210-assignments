@@ -22,8 +22,9 @@ categorical_attributes_list = [
 def get_cat_attr_combinations(engine, categorical_attributes_list):
 
     # This method assembles the dictionary for all combinations of categorical attributes
-    # as well as the set of all categorical values used in each of the columns.
-    # The method returns a dictionary of all categorical attributes combinations. 
+    # and the set of all categorical values used in each of the columns.
+    # The method returns a dictionary of all combinations of categorical attributes and their values 
+    # and initializes their counts to 0. 
     # An example using "gender" and "relationship_status" is shown below:
     """ 
     {
@@ -73,40 +74,47 @@ def get_cat_attr_combinations(engine, categorical_attributes_list):
     for attr1 in column_attr_values_dict.keys():
         categorical_attr_mappings[attr1] = {}
         for attr2 in column_attr_values_dict.keys():
+            
+            # skip getting of correlation when attributes are the same
             if attr1 == attr2:
                 continue
+
+            # this condition is to prevent computing the same pair of attributes twice.
+            # ex. "gender" "relationship_status" <==> "relationship_status" "gender" 
             if attr2 in categorical_attr_mappings:
                 continue
+
             categorical_attr_mappings[attr1][attr2] = {}
+
             for value1 in column_attr_values_dict[attr1]:
                 categorical_attr_mappings[attr1][attr2][value1] = {}
                 for value2 in column_attr_values_dict[attr2]:
                     categorical_attr_mappings[attr1][attr2][value1][value2] = 0
+
     return categorical_attr_mappings
 
-def get_totals(engine, categorical_attributes_list, categorical_attr_mappings):
+def get_counts(engine, categorical_attributes_list, categorical_attr_mappings):
     
-    mapper = inspect(Respondents)
-    chi_square_filepath = "analysis/chi_square"
-    filepath = f"{chi_square_filepath}/categorical_attr_mappings.txt"
-    if os.path.exists(filepath):
-        os.remove(filepath)
-    with open(filepath, "a") as f:
-        for column_attr in mapper.attrs:
-            for column_attr2 in mapper.attrs:
-                if column_attr.key not in categorical_attributes_list or column_attr2.key not in categorical_attributes_list:
-                    continue
-                
-                if column_attr.key == column_attr2.key:
-                    continue
+    # this method gets the values for each combination of values for each combination of attributes
+    # assembling the dictionary must be done first because the query below omits groupings where their value is 0
 
-                group_by = select(column_attr, column_attr2, func.count(column_attr).label("count")).group_by(column_attr).group_by(column_attr2)
-                with Session(engine) as session:
-                    for result_tuple in session.execute(group_by):
-                        x = f"{column_attr.key} {column_attr2.key} {result_tuple}"
-                        if column_attr2.key in categorical_attr_mappings[column_attr.key]:
-                            categorical_attr_mappings[column_attr.key][column_attr2.key][result_tuple[0]][result_tuple[1]] = result_tuple[2]
-                            f.write(f"{x}\n")
+    mapper = inspect(Respondents)
+    for column_attr in mapper.attrs:
+        for column_attr2 in mapper.attrs:
+            if column_attr.key not in categorical_attributes_list or column_attr2.key not in categorical_attributes_list:
+                continue
+            
+            if column_attr.key == column_attr2.key:
+                continue
+
+            if column_attr2.key not in categorical_attr_mappings[column_attr.key]:
+                continue
+
+            group_by_query = select(column_attr, column_attr2, func.count(column_attr).label("count")).group_by(column_attr).group_by(column_attr2)
+            with Session(engine) as session:
+                for result_tuple in session.execute(group_by_query):
+                    categorical_attr_mappings[column_attr.key][column_attr2.key][result_tuple[0]][result_tuple[1]] = result_tuple[2]
+    
     return categorical_attr_mappings
 
 def chi_square(array):
@@ -215,16 +223,12 @@ def chi_square(array):
 
     obs = np.array(array)
     res = chi2_contingency(obs, correction=False)
-    # print(f"statistic {res.statistic}")
     res.pvalue
-    # print(f"dof {res.dof}")
     res.expected_freq
     null_hypothesis = ''
     if res.statistic > critical_value_dict[res.dof]:
-        # print("reject null hypothesis i.e. values are related")
         null_hypothesis = 'Reject. Values related'
     else:
-        # print("accept null hypothesis i.e. values are unrelated")
         null_hypothesis = 'Accept. Values unrelated'
 
     return tuple((
@@ -236,24 +240,30 @@ def chi_square(array):
         res.expected_freq
     ))
 
-def chi_square_analysis(cat_att_maps):
+def chi_square_analysis(cat_att_dict):
+
+    # do the chi square analysis for each pair of attributes
+    
     chi_square_dict = {}
     attr_chi_square_list = []
-    for attr1 in cat_att_maps.keys():  
-        if cat_att_maps[attr1].keys() == 0:
+
+    for attr1 in cat_att_dict.keys():  
+        if len(cat_att_dict[attr1].keys()) == 0:
             continue
         chi_square_dict[attr1] = {}
-        for attr2 in cat_att_maps[attr1].keys():
+        for attr2 in cat_att_dict[attr1].keys():
+            
+            # assembling the list of lists for the chi_square function
             chi_square_list = []
 
-            # looping through values
-            for attr1_values in cat_att_maps[attr1][attr2].keys():
+            for attr1_values in cat_att_dict[attr1][attr2].keys():
                 value2_list = []
-                for attr2_values in cat_att_maps[attr1][attr2][attr1_values].keys():
-                    value2_list.append(cat_att_maps[attr1][attr2][attr1_values][attr2_values])
+                for attr2_values in cat_att_dict[attr1][attr2][attr1_values].keys():
+                    value2_list.append(cat_att_dict[attr1][attr2][attr1_values][attr2_values])
                 
                 chi_square_list.append(value2_list)
             
+            # chi square analysis
             (statistic, dof, critical_value, null_hypothesis, obs, expected_freq) = chi_square(chi_square_list)
             chi_square_dict[attr1][attr2] = {
                 "statistic": statistic,
@@ -267,8 +277,8 @@ def chi_square_analysis(cat_att_maps):
                 "critical_value": critical_value,
                 "statistic": round(statistic, 5),
                 "null_hypothesis": null_hypothesis,
-                "x_axis":list(cat_att_maps[attr1][attr2][attr1_values].keys()),
-                "y_axis":list(cat_att_maps[attr1][attr2].keys()),
+                "x_axis":list(cat_att_dict[attr1][attr2][attr1_values].keys()),
+                "y_axis":list(cat_att_dict[attr1][attr2].keys()),
                 "obs": obs.tolist(),
                 "expected": expected_freq.tolist()
             })
@@ -286,7 +296,7 @@ if not os.path.exists(figure_path):
         os.makedirs(figure_path)   
 
 categorical_attr_mappings = get_cat_attr_combinations(engine, categorical_attributes_list)
-categorical_attr_mappings = get_totals(engine, categorical_attributes_list, categorical_attr_mappings)
+categorical_attr_mappings = get_counts(engine, categorical_attributes_list, categorical_attr_mappings)
 
 with open(f"{chi_square_filepath}/categorical_attr_mappings.json", "w") as f:
     f.write(json.dumps(categorical_attr_mappings))
