@@ -4,25 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sqlalchemy import create_engine, func, inspect, select
 from sqlalchemy.orm import Session
-from dataETL.dataModel import Respondents
+from dataETL.dataModel import Respondents, attribute_column_dict
 from tabulate import tabulate
 from scipy.stats import chi2_contingency
-
-engine = create_engine(f"sqlite:///./{os.environ["DB_NAME"]}", echo=False)
-
-categorical_attributes_list = [
-    "gender",
-    "relationship_status",
-    "employment_status",
-    "pet_ownership",
-    "housing_type",
-    "primary_cook",
-    "preferred_dining",
-    "frequency_eating_out",
-    "frequency_takeout_delivery",
-    "frequency_cook_home",
-    "frequency_grocery",
-]
 
 def get_cat_attr_combinations(engine, categorical_attributes_list):
 
@@ -353,8 +337,8 @@ def create_csvs(chi_square_filepath, figure_path, chi_square_list):
         plt.savefig(f"{figure_path}/plot-{attr1}-{attr2}.png")
         plt.close()
 
-def pretty_print_chi_square(chi_square_list, to_csv=False):
-    f = open("chi_square_list.csv", "w") if to_csv else None
+def pretty_print_chi_square(chi_square_list, to_csv=False, filepath=None):
+    f = open(filepath, "w") if to_csv else None
     table = []
     header_list = ["Attribute 1","Attribute 2","Degrees of Freedom","Critical Value","Correlation Coefficient","Null Hypothesis"]
     table.append(header_list)
@@ -363,10 +347,10 @@ def pretty_print_chi_square(chi_square_list, to_csv=False):
     for obj in chi_square_list:
         attr1 = obj["attributes"][0]
         attr2 = obj["attributes"][1]
-        row = [attr1, attr2, obj["dof"], obj["critical_value"], obj["statistic"], obj["null_hypothesis"]]
+        row = [attribute_column_dict[attr1], attribute_column_dict[attr2], obj["dof"], obj["critical_value"], obj["statistic"], obj["null_hypothesis"]]
         table.append(row)
         if to_csv:
-            f.write(f"{','.join(row)}\n")
+            f.write(f"{','.join(str(v) for v in row)}\n")
     print("\n\n================ CHI SQUARE CORRELATION ANALYSIS ================\n")
     print(tabulate(table, headers="firstrow", tablefmt="fancy_grid"))
     if to_csv:
@@ -378,6 +362,22 @@ def sort_by_statistic(obj):
 def sort_by_null_hypothesis(obj):
     return obj["null_hypothesis"]
 
+engine = create_engine(f"sqlite:///./{os.environ["DB_NAME"]}", echo=False)
+
+categorical_attributes_list = [
+    "gender",
+    "relationship_status",
+    "employment_status",
+    "pet_ownership",
+    "housing_type",
+    "primary_cook",
+    "preferred_dining",
+    "frequency_eating_out",
+    "frequency_takeout_delivery",
+    "frequency_cook_home",
+    "frequency_grocery",
+]
+
 chi_square_filepath = "analysis/chi_square"
 figure_path = "figures/chi_square"
 if not os.path.exists(chi_square_filepath):
@@ -387,20 +387,17 @@ if not os.path.exists(figure_path):
 
 categorical_attr_dict = get_cat_attr_combinations(engine, categorical_attributes_list)
 categorical_attr_dict = get_counts(engine, categorical_attributes_list, categorical_attr_dict)
+(chi_square_dict, chi_square_list) = chi_square_analysis(categorical_attr_dict)
+chi_square_list.sort(key=sort_by_statistic, reverse=True)
+chi_square_list.sort(key=sort_by_null_hypothesis, reverse=True)
+pretty_print_chi_square(chi_square_list, to_csv=True, filepath=f"{chi_square_filepath}/chi_square_list.csv")
 
 with open(f"{chi_square_filepath}/categorical_attr_mappings.json", "w") as f:
     f.write(json.dumps(categorical_attr_dict))
 
-(chi_square_dict, chi_square_list) = chi_square_analysis(categorical_attr_dict)
-
-
-chi_square_list.sort(key=sort_by_statistic, reverse=True)
-chi_square_list.sort(key=sort_by_null_hypothesis, reverse=True)
-
 with open(f"{chi_square_filepath}/chi_square_list.json", "w") as f:
     f.write(json.dumps(chi_square_list))
 create_csvs(chi_square_filepath, figure_path, chi_square_list)
-pretty_print_chi_square(chi_square_list)
 
                 
 

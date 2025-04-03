@@ -98,13 +98,17 @@ attribute_column_dict = {
     "budget_takeout_delivery":"Average budget per person when ordering takeout/delivery",
     "grocery_cost":"Approximate cost of groceries per month for home cooking",
     "gender": "Gender",
-    "relationship_status": "",
-    "employment_status": "Relationship Status",
+    "relationship_status": "Relationship Status",
+    "employment_status": "Employment Status",
     "pet_ownership": "Pet Ownership",
     "housing_type": "Housing type",
     "primary_cook": "Are you the primary person that prepares meals in the household if any?",
-    "preferred_dining": "Preferred Dining"
-    }
+    "preferred_dining": "Preferred Dining",
+    "frequency_eating_out": "Frequency of eating out",
+    "frequency_takeout_delivery": "Frequency of ordering takeout/delivery",
+    "frequency_cook_home": "Frequency of cooking at home",
+    "frequency_grocery": "Frequency of buying groceries",
+}
 
 class Cuisine(Base):
     __tablename__ = "cuisine"

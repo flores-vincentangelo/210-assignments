@@ -405,7 +405,6 @@ def compute_correlation(engine):
 
     try:
 
-        
         # read numerical attribute data from database
         numerical_data_dict = get_data(engine, numerical_attribute_list)
         # compute correlations
