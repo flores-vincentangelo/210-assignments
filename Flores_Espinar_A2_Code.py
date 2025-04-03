@@ -113,7 +113,7 @@ def get_cat_attr_combinations(engine, categorical_attributes_list):
         ...  
     }
      """
-    categorical_attr_mappings = {}
+    categorical_attr_dict = {}
     column_attr_values_dict = {}
 
     # get metadata of "Respondents" table
@@ -136,7 +136,7 @@ def get_cat_attr_combinations(engine, categorical_attributes_list):
     
     # assembly of categorical attribute dictionary
     for attr1 in column_attr_values_dict.keys():
-        categorical_attr_mappings[attr1] = {}
+        categorical_attr_dict[attr1] = {}
         for attr2 in column_attr_values_dict.keys():
             
             # skip getting of correlation when attributes are the same
@@ -145,19 +145,19 @@ def get_cat_attr_combinations(engine, categorical_attributes_list):
 
             # this condition is to prevent computing the same pair of attributes twice.
             # ex. "gender" "relationship_status" <==> "relationship_status" "gender" 
-            if attr2 in categorical_attr_mappings:
+            if attr2 in categorical_attr_dict:
                 continue
 
-            categorical_attr_mappings[attr1][attr2] = {}
+            categorical_attr_dict[attr1][attr2] = {}
 
             for value1 in column_attr_values_dict[attr1]:
-                categorical_attr_mappings[attr1][attr2][value1] = {}
+                categorical_attr_dict[attr1][attr2][value1] = {}
                 for value2 in column_attr_values_dict[attr2]:
-                    categorical_attr_mappings[attr1][attr2][value1][value2] = 0
+                    categorical_attr_dict[attr1][attr2][value1][value2] = 0
 
-    return categorical_attr_mappings
+    return categorical_attr_dict
 
-def get_counts(engine, categorical_attributes_list, categorical_attr_mappings):
+def get_counts(engine, categorical_attributes_list, categorical_attr_dict):
     
     # this method gets the values for each combination of values for each combination of attributes
     # assembling the dictionary must be done first because the query below omits groupings where their value is 0
@@ -171,15 +171,15 @@ def get_counts(engine, categorical_attributes_list, categorical_attr_mappings):
             if column_attr.key == column_attr2.key:
                 continue
 
-            if column_attr2.key not in categorical_attr_mappings[column_attr.key]:
+            if column_attr2.key not in categorical_attr_dict[column_attr.key]:
                 continue
 
             group_by_query = select(column_attr, column_attr2, func.count(column_attr).label("count")).group_by(column_attr).group_by(column_attr2)
             with Session(engine) as session:
                 for result_tuple in session.execute(group_by_query):
-                    categorical_attr_mappings[column_attr.key][column_attr2.key][result_tuple[0]][result_tuple[1]] = result_tuple[2]
+                    categorical_attr_dict[column_attr.key][column_attr2.key][result_tuple[0]][result_tuple[1]] = result_tuple[2]
     
-    return categorical_attr_mappings
+    return categorical_attr_dict
 
 def chi_square(array):
     critical_value_dict = {
@@ -304,23 +304,22 @@ def chi_square(array):
         res.expected_freq
     ))
 
-def chi_square_analysis(cat_att_dict):
+def chi_square_analysis(categorical_attr_dict):
 
     # do the chi square analysis for each pair of attributes
     attr_chi_square_list = []
 
-    for attr1 in cat_att_dict.keys():  
-        if len(cat_att_dict[attr1].keys()) == 0:
+    for attr1 in categorical_attr_dict.keys():  
+        if len(categorical_attr_dict[attr1].keys()) == 0:
             continue
-        for attr2 in cat_att_dict[attr1].keys():
+        for attr2 in categorical_attr_dict[attr1].keys():
             
-            # assembling the list of lists for the chi_square function
+            # assembling the list of lists for the chi_square method
             chi_square_list = []
-
-            for attr1_values in cat_att_dict[attr1][attr2].keys():
+            for attr1_values in categorical_attr_dict[attr1][attr2].keys():
                 value2_list = []
-                for attr2_values in cat_att_dict[attr1][attr2][attr1_values].keys():
-                    value2_list.append(cat_att_dict[attr1][attr2][attr1_values][attr2_values])
+                for attr2_values in categorical_attr_dict[attr1][attr2][attr1_values].keys():
+                    value2_list.append(categorical_attr_dict[attr1][attr2][attr1_values][attr2_values])
                 
                 chi_square_list.append(value2_list)
             
@@ -333,16 +332,25 @@ def chi_square_analysis(cat_att_dict):
                 "critical_value": critical_value,
                 "statistic": round(statistic, 5),
                 "null_hypothesis": null_hypothesis,
-                "x_axis":list(cat_att_dict[attr1][attr2][attr1_values].keys()),
-                "y_axis":list(cat_att_dict[attr1][attr2].keys()),
+                "x_axis":list(categorical_attr_dict[attr1][attr2][attr1_values].keys()),
+                "y_axis":list(categorical_attr_dict[attr1][attr2].keys()),
                 "obs": obs.tolist(),
                 "expected": expected_freq.tolist()
             })
     
     return attr_chi_square_list
 
-def pretty_print_pearsons(pearsons_list, to_csv=False):
-    f = open("pearsons_list.csv", "w") if to_csv else None
+
+attribute_column_dict = {
+    "age": "Age",
+    "household_size":"Household Size",
+    "budget_eat_out":"Average budget per person when eating out",
+    "budget_takeout_delivery":"Average budget per person when ordering takeout/delivery",
+    "grocery_cost":"Approximate cost of groceries per month for home cooking",
+}
+
+def pretty_print_pearsons(pearsons_list, to_csv=False, filepath=None):
+    f = open(filepath, "w") if to_csv else None
     table = []
     header_list = ["Attribute 1","Attribute 2","Correlation Coefficient","Rank"]
     table.append(header_list)
@@ -352,27 +360,26 @@ def pretty_print_pearsons(pearsons_list, to_csv=False):
     for obj in pearsons_list:
         attr1 = obj["attributes"][0]
         attr2 = obj["attributes"][1]
-        row = [attr1["name"],attr2["name"],obj["statistic"],count]
+        row = [attribute_column_dict[attr1["name"]],attribute_column_dict[attr2["name"]],obj["statistic"],count]
         table.append(row)
         if to_csv:
-            f.write(f"{','.join(row)}\n")
+            f.write(f"{','.join(str(x) for x in row)}\n")
         count += 1
     print("\n\n================ PEARSON'S CORRELATION ANALYSIS ================\n")
     print(tabulate(table, headers="firstrow", tablefmt="fancy_grid"))
     if to_csv:
         f.close()
-
 def pretty_print_chi_square(chi_square_list, to_csv=False):
     f = open("chi_square_list.csv", "w") if to_csv else None
     table = []
-    header_list = ["Attribute 1","Attribute 2","Critical Value","Correlation Coefficient","Null Hypothesis"]
+    header_list = ["Attribute 1","Attribute 2","Degrees of Freedom","Critical Value","Correlation Coefficient","Null Hypothesis"]
     table.append(header_list)
     if to_csv:
         f.write(f"{','.join(header_list)}\n")
     for obj in chi_square_list:
         attr1 = obj["attributes"][0]
         attr2 = obj["attributes"][1]
-        row = [attr1, attr2, obj["critical_value"], obj["statistic"], obj["null_hypothesis"]]
+        row = [attr1, attr2, obj["dof"], obj["critical_value"], obj["statistic"], obj["null_hypothesis"]]
         table.append(row)
         if to_csv:
             f.write(f"{','.join(row)}\n")
@@ -391,8 +398,7 @@ def sort_by_null_hypothesis(obj):
 # function to compute correlation coefficients
 def compute_correlation(engine):
     try:
-
-        # read data from database
+        # read numerical attribute data from database
         numerical_data_dict = get_data(engine)
         # compute correlations
         pearsons_list = pearsons_correlation(numerical_data_dict)
@@ -411,11 +417,17 @@ def compute_correlation(engine):
             "preferred_dining",
         ]
 
-        categorical_attr_mappings = get_cat_attr_combinations(engine, categorical_attributes_list)
-        categorical_attr_mappings = get_counts(engine, categorical_attributes_list, categorical_attr_mappings)
-        chi_square_list = chi_square_analysis(categorical_attr_mappings)
+        # prepare dictionary of combinations of categorical attribute values 
+        # and corresponding combination of values
+        categorical_attr_dict = get_cat_attr_combinations(engine, categorical_attributes_list)
+        # get counts for each combination
+        categorical_attr_dict = get_counts(engine, categorical_attributes_list, categorical_attr_dict)
+        # compute correlation
+        chi_square_list = chi_square_analysis(categorical_attr_dict)
+        # sort by statistic then sort by null hypothesis
         chi_square_list.sort(key=sort_by_statistic, reverse=True)
         chi_square_list.sort(key=sort_by_null_hypothesis, reverse=True)
+        # print to console
         pretty_print_chi_square(chi_square_list)
 
     except Exception as e:

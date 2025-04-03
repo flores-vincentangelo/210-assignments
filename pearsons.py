@@ -34,6 +34,14 @@ def get_data(engine):
             numerical_attribute_dict["grocery_cost"].append(respondent.grocery_cost)
     return numerical_attribute_dict
 
+attribute_column_dict = {
+    "age": "Age",
+    "household_size":"Household Size",
+    "budget_eat_out":"Average budget per person when eating out",
+    "budget_takeout_delivery":"Average budget per person when ordering takeout/delivery",
+    "grocery_cost":"Approximate cost of groceries per month for home cooking",
+}
+
 def make_scatter_plots(x_label, y_label, x, y):
     figure_path = "figures/pearsons-scatter"
     if not os.path.exists(figure_path):
@@ -42,8 +50,8 @@ def make_scatter_plots(x_label, y_label, x, y):
     # plt.style.use('_mpl-gallery')
     sizes = np.random.uniform(15, 80, len(x))
     colors = np.random.uniform(15, 80, len(x))
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
+    plt.xlabel(attribute_column_dict[x_label])
+    plt.ylabel(attribute_column_dict[y_label])
     ax.scatter(x, y, s=sizes, c=colors, vmin=0, vmax=100)
     plt.savefig(f"{figure_path}/scatter-{x_label}-{y_label}.png")
     plt.close()
@@ -53,7 +61,7 @@ def make_histogram(numerical_attribute_dict, attribute):
     figure_path = "figures/histogram"
     if not os.path.exists(figure_path):
         os.makedirs(figure_path)
-    plt.xlabel(attribute)
+    plt.xlabel(attribute_column_dict[attribute])
     plt.ylabel("frequency")
     plt.hist(numerical_attribute_dict[attribute])
     plt.savefig(f"{figure_path}/histogram-{attribute}.png")
@@ -88,26 +96,35 @@ def pearsons_correlation(data_dict):
 
     return pearsons_list
 
-def pretty_print(pearsons_list, to_csv=False):
-    f = open(f"{analysis_path}/pearsons_list.csv", "w") if to_csv else None
+def pretty_print_pearsons(pearsons_list, to_csv=False, filepath=None):
+    f = open(filepath, "w") if to_csv else None
     table = []
-    table.append(["Attribute 1","Attribute 2","Correlation Coefficient","Rank"])
+    header_list = ["Attribute 1","Attribute 2","Correlation Coefficient","Rank"]
+    table.append(header_list)
     if to_csv:
-        f.write(f"Attribute 1,Attribute 2,Correlation Coefficient,Rank\n")
+        f.write(f"{','.join(header_list)}\n")
     count = 1
     for obj in pearsons_list:
         attr1 = obj["attributes"][0]
         attr2 = obj["attributes"][1]
+        row = [attribute_column_dict[attr1["name"]],attribute_column_dict[attr2["name"]],obj["statistic"],count]
+        table.append(row)
         if to_csv:
-            f.write(f"{attr1["name"]},{attr2["name"]},{obj["statistic"]},{count}\n")
-        table.append([attr1["name"],attr2["name"],obj["statistic"],count])
+            f.write(f"{','.join(str(x) for x in row)}\n")
         count += 1
+    print("\n\n================ PEARSON'S CORRELATION ANALYSIS ================\n")
     print(tabulate(table, headers="firstrow", tablefmt="fancy_grid"))
     if to_csv:
         f.close()
 
+def sort_by_statistic(obj):
+    return obj["statistic"]
+
+
 numerical_data_dict = get_data(engine)
 pearsons_list = pearsons_correlation(numerical_data_dict)
+pearsons_list.sort(key=sort_by_statistic, reverse=True)
+pretty_print_pearsons(pearsons_list, to_csv=True, filepath=f"{analysis_path}/pearsons_list.csv")
 
 for attr in numerical_data_dict.keys():
     make_histogram(numerical_data_dict, attr)
@@ -116,17 +133,5 @@ for obj in pearsons_list:
     attr2 = obj["attributes"][1]
     make_scatter_plots(attr1["name"], attr2["name"], attr1["values"], attr2["values"])
 
-
-
 with open(f"{analysis_path}/attr_pearsons_list.json", "w") as f:
     f.write(json.dumps(pearsons_list))
-# with open(f"{analysis_path}/pearsons_list.csv", "w") as f:
-#     f.write(f"Attribute 1,Attribute 2,Correlation Coefficient,Rank\n")
-#     count = 1
-#     for obj in pearsons_list:
-#         attr1 = obj["attributes"][0]
-#         attr2 = obj["attributes"][1]
-#         f.write(f"{attr1["name"]},{attr2["name"]},{obj["statistic"]},{count}\n")
-#         count += 1
-
-pretty_print(pearsons_list)

@@ -5,9 +5,10 @@ import matplotlib.pyplot as plt
 from sqlalchemy import create_engine, func, inspect, select
 from sqlalchemy.orm import Session
 from dataETL.dataModel import Respondents
+from tabulate import tabulate
 from scipy.stats import chi2_contingency
 
-engine = create_engine(f"sqlite:///./{os.environ["DB_NAME"]}", echo=True)
+engine = create_engine(f"sqlite:///./{os.environ["DB_NAME"]}", echo=False)
 
 categorical_attributes_list = [
     "gender",
@@ -17,6 +18,10 @@ categorical_attributes_list = [
     "housing_type",
     "primary_cook",
     "preferred_dining",
+    "frequency_eating_out",
+    "frequency_takeout_delivery",
+    "frequency_cook_home",
+    "frequency_grocery",
 ]
 
 def get_cat_attr_combinations(engine, categorical_attributes_list):
@@ -93,7 +98,7 @@ def get_cat_attr_combinations(engine, categorical_attributes_list):
 
     return categorical_attr_mappings
 
-def get_counts(engine, categorical_attributes_list, categorical_attr_mappings):
+def get_counts(engine, categorical_attributes_list, categorical_attr_dict):
     
     # this method gets the values for each combination of values for each combination of attributes
     # assembling the dictionary must be done first because the query below omits groupings where their value is 0
@@ -107,15 +112,15 @@ def get_counts(engine, categorical_attributes_list, categorical_attr_mappings):
             if column_attr.key == column_attr2.key:
                 continue
 
-            if column_attr2.key not in categorical_attr_mappings[column_attr.key]:
+            if column_attr2.key not in categorical_attr_dict[column_attr.key]:
                 continue
 
             group_by_query = select(column_attr, column_attr2, func.count(column_attr).label("count")).group_by(column_attr).group_by(column_attr2)
             with Session(engine) as session:
                 for result_tuple in session.execute(group_by_query):
-                    categorical_attr_mappings[column_attr.key][column_attr2.key][result_tuple[0]][result_tuple[1]] = result_tuple[2]
+                    categorical_attr_dict[column_attr.key][column_attr2.key][result_tuple[0]][result_tuple[1]] = result_tuple[2]
     
-    return categorical_attr_mappings
+    return categorical_attr_dict
 
 def chi_square(array):
     critical_value_dict = {
@@ -348,7 +353,31 @@ def create_csvs(chi_square_filepath, figure_path, chi_square_list):
         plt.savefig(f"{figure_path}/plot-{attr1}-{attr2}.png")
         plt.close()
 
-        
+def pretty_print_chi_square(chi_square_list, to_csv=False):
+    f = open("chi_square_list.csv", "w") if to_csv else None
+    table = []
+    header_list = ["Attribute 1","Attribute 2","Degrees of Freedom","Critical Value","Correlation Coefficient","Null Hypothesis"]
+    table.append(header_list)
+    if to_csv:
+        f.write(f"{','.join(header_list)}\n")
+    for obj in chi_square_list:
+        attr1 = obj["attributes"][0]
+        attr2 = obj["attributes"][1]
+        row = [attr1, attr2, obj["dof"], obj["critical_value"], obj["statistic"], obj["null_hypothesis"]]
+        table.append(row)
+        if to_csv:
+            f.write(f"{','.join(row)}\n")
+    print("\n\n================ CHI SQUARE CORRELATION ANALYSIS ================\n")
+    print(tabulate(table, headers="firstrow", tablefmt="fancy_grid"))
+    if to_csv:
+        f.close()
+
+def sort_by_statistic(obj):
+    return obj["statistic"]
+
+def sort_by_null_hypothesis(obj):
+    return obj["null_hypothesis"]
+
 chi_square_filepath = "analysis/chi_square"
 figure_path = "figures/chi_square"
 if not os.path.exists(chi_square_filepath):
@@ -356,21 +385,23 @@ if not os.path.exists(chi_square_filepath):
 if not os.path.exists(figure_path):
         os.makedirs(figure_path)   
 
-categorical_attr_mappings = get_cat_attr_combinations(engine, categorical_attributes_list)
-categorical_attr_mappings = get_counts(engine, categorical_attributes_list, categorical_attr_mappings)
+categorical_attr_dict = get_cat_attr_combinations(engine, categorical_attributes_list)
+categorical_attr_dict = get_counts(engine, categorical_attributes_list, categorical_attr_dict)
 
 with open(f"{chi_square_filepath}/categorical_attr_mappings.json", "w") as f:
-    f.write(json.dumps(categorical_attr_mappings))
+    f.write(json.dumps(categorical_attr_dict))
 
-(chi_square_dict, chi_square_list) = chi_square_analysis(categorical_attr_mappings)
+(chi_square_dict, chi_square_list) = chi_square_analysis(categorical_attr_dict)
 
-def sorting_function(obj):
-    return obj["statistic"]
-chi_square_list.sort(key=sorting_function)
+
+chi_square_list.sort(key=sort_by_statistic, reverse=True)
+chi_square_list.sort(key=sort_by_null_hypothesis, reverse=True)
+
 with open(f"{chi_square_filepath}/chi_square_list.json", "w") as f:
     f.write(json.dumps(chi_square_list))
-
 create_csvs(chi_square_filepath, figure_path, chi_square_list)
+pretty_print_chi_square(chi_square_list)
+
                 
 
 
