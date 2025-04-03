@@ -15,8 +15,3 @@ How to run the code
 to open sqlite browser
 
 `sqlitebrowser`
-
-TODO:
-~~pearsons~~
-~~chisquare~~
-~~clean data~~
