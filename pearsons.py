@@ -4,7 +4,7 @@ import json
 import numpy as np
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
-from dataETL.dataModel import Respondents
+from dataETL.dataModel import Respondents, attribute_column_dict
 from scipy import stats
 from tabulate import tabulate
 
@@ -14,15 +14,12 @@ analysis_path = "analysis/pearsons"
 if not os.path.exists(analysis_path):
         os.makedirs(analysis_path)
 
-def get_data(engine):
+def get_data(engine, numerical_attribute_list):
 
-    numerical_attribute_dict = {
-        "age": [],
-        "household_size": [],
-        "budget_eat_out": [],
-        "budget_takeout_delivery": [],
-        "grocery_cost": [],
-    }
+    numerical_attribute_dict = {}
+
+    for item in numerical_attribute_list:
+        numerical_attribute_dict[item] = []
 
     with Session(engine) as session:
         select_all_respondents = select(Respondents)
@@ -33,14 +30,6 @@ def get_data(engine):
             numerical_attribute_dict["budget_takeout_delivery"].append(respondent.budget_takeout_delivery)
             numerical_attribute_dict["grocery_cost"].append(respondent.grocery_cost)
     return numerical_attribute_dict
-
-attribute_column_dict = {
-    "age": "Age",
-    "household_size":"Household Size",
-    "budget_eat_out":"Average budget per person when eating out",
-    "budget_takeout_delivery":"Average budget per person when ordering takeout/delivery",
-    "grocery_cost":"Approximate cost of groceries per month for home cooking",
-}
 
 def make_scatter_plots(x_label, y_label, x, y):
     figure_path = "figures/pearsons-scatter"
@@ -120,8 +109,15 @@ def pretty_print_pearsons(pearsons_list, to_csv=False, filepath=None):
 def sort_by_statistic(obj):
     return obj["statistic"]
 
+numerical_attribute_list = [
+        "age",
+        "household_size",
+        "budget_eat_out",
+        "budget_takeout_delivery",
+        "grocery_cost",
+    ]
 
-numerical_data_dict = get_data(engine)
+numerical_data_dict = get_data(engine, numerical_attribute_list)
 pearsons_list = pearsons_correlation(numerical_data_dict)
 pearsons_list.sort(key=sort_by_statistic, reverse=True)
 pretty_print_pearsons(pearsons_list, to_csv=True, filepath=f"{analysis_path}/pearsons_list.csv")

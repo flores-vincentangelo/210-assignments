@@ -12,7 +12,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from dataETL.dataModel import Respondents
+from dataETL.dataModel import Respondents, attribute_column_dict
 from tabulate import tabulate
 from scipy import stats
 from scipy.stats import chi2_contingency
@@ -23,15 +23,12 @@ from sqlalchemy.orm import Session
 
 engine = create_engine(f"sqlite:///./{os.environ["DB_NAME"]}", echo=False)
 
-def get_data(engine):
+def get_data(engine, numerical_attribute_list):
 
-    numerical_attribute_dict = {
-        "age": [],
-        "household_size": [],
-        "budget_eat_out": [],
-        "budget_takeout_delivery": [],
-        "grocery_cost": [],
-    }
+    numerical_attribute_dict = {}
+
+    for item in numerical_attribute_list:
+        numerical_attribute_dict[item] = []
 
     # use sqlalchemy ORM to run query
     with Session(engine) as session:
@@ -340,15 +337,6 @@ def chi_square_analysis(categorical_attr_dict):
     
     return attr_chi_square_list
 
-
-attribute_column_dict = {
-    "age": "Age",
-    "household_size":"Household Size",
-    "budget_eat_out":"Average budget per person when eating out",
-    "budget_takeout_delivery":"Average budget per person when ordering takeout/delivery",
-    "grocery_cost":"Approximate cost of groceries per month for home cooking",
-}
-
 def pretty_print_pearsons(pearsons_list, to_csv=False, filepath=None):
     f = open(filepath, "w") if to_csv else None
     table = []
@@ -369,6 +357,7 @@ def pretty_print_pearsons(pearsons_list, to_csv=False, filepath=None):
     print(tabulate(table, headers="firstrow", tablefmt="fancy_grid"))
     if to_csv:
         f.close()
+
 def pretty_print_chi_square(chi_square_list, to_csv=False):
     f = open("chi_square_list.csv", "w") if to_csv else None
     table = []
@@ -379,7 +368,7 @@ def pretty_print_chi_square(chi_square_list, to_csv=False):
     for obj in chi_square_list:
         attr1 = obj["attributes"][0]
         attr2 = obj["attributes"][1]
-        row = [attr1, attr2, obj["dof"], obj["critical_value"], obj["statistic"], obj["null_hypothesis"]]
+        row = [attribute_column_dict[attr1], attribute_column_dict[attr2], obj["dof"], obj["critical_value"], obj["statistic"], obj["null_hypothesis"]]
         table.append(row)
         if to_csv:
             f.write(f"{','.join(row)}\n")
@@ -394,20 +383,9 @@ def sort_by_statistic(obj):
 def sort_by_null_hypothesis(obj):
     return obj["null_hypothesis"]
 
-
 # function to compute correlation coefficients
 def compute_correlation(engine):
-    try:
-        # read numerical attribute data from database
-        numerical_data_dict = get_data(engine)
-        # compute correlations
-        pearsons_list = pearsons_correlation(numerical_data_dict)
-        # sort attribute pairs according to correlation, rank 1 being the largest correlation factor
-        pearsons_list.sort(key=sort_by_statistic, reverse=True)
-        # print to console
-        pretty_print_pearsons(pearsons_list)
-
-        categorical_attributes_list = [
+    categorical_attributes_list = [
             "gender",
             "relationship_status",
             "employment_status",
@@ -416,6 +394,26 @@ def compute_correlation(engine):
             "primary_cook",
             "preferred_dining",
         ]
+
+    numerical_attribute_list = [
+        "age",
+        "household_size",
+        "budget_eat_out",
+        "budget_takeout_delivery",
+        "grocery_cost",
+    ]
+
+    try:
+
+        
+        # read numerical attribute data from database
+        numerical_data_dict = get_data(engine, numerical_attribute_list)
+        # compute correlations
+        pearsons_list = pearsons_correlation(numerical_data_dict)
+        # sort attribute pairs according to correlation, rank 1 being the largest correlation factor
+        pearsons_list.sort(key=sort_by_statistic, reverse=True)
+        # print to console
+        pretty_print_pearsons(pearsons_list)
 
         # prepare dictionary of combinations of categorical attribute values 
         # and corresponding combination of values
