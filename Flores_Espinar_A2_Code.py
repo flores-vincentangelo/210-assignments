@@ -111,7 +111,7 @@ def sorting_function(obj):
 
 
 # function to compute correlation coefficient
-def compute_correlation(engine, csv_file):
+def compute_correlation(engine):
     try:
 
         # read data from database
@@ -139,46 +139,42 @@ def compute_correlation(engine, csv_file):
         # print(correlation1)
         # print(correlation2)
 
-    except FileNotFoundError:
-        print(f"Error: The file '{csv_file}' was not found.")
+    # except FileNotFoundError:
+    #     print(f"Error: The file '{csv_file}' was not found.")
     except Exception as e:
         print(f"An error occurred: {e}")
 
+# compute_correlation(engine)
 
+
+# perform k-means clustering 
 def display_clusters(csv_file, n_clusters=3):
-    # Load dataset
-    df = pd.read_csv(csv_file, skiprows=0, usecols=[2, 9, 12, 13, 14])
-    
-    # Compute the correlation matrix
-    corr_matrix = df.corr(method='pearson')  # Use absolute values for correlation
-    np.fill_diagonal(corr_matrix.values, 0)  # Remove self-correlation
+    # load dataset, consider only numerical columns
+    df = pd.read_csv(csv_file, skiprows=0, usecols=[2, 9, 12, 13, 14]) 
 
-    # Display correlation values
-    # print("\n=== Correlation Matrix ===")
-    short_names = {col: col[:5] for col in df.columns}
+    corr_matrix = df.corr(method='pearson')  # compute correlation matrix
+    np.fill_diagonal(corr_matrix.values, 0)  # remove self-correlation
+
+    # display correlation values
+    short_names = {col: col[:5] for col in df.columns} # shorten column names
     corr_matrix.rename(index=short_names, columns=short_names, inplace=True)
-
-    # Display correlation matrix
     print(corr_matrix)
     
-    # Get the most correlated pair
+    # get the most correlated pair
     strongest_pair = np.unravel_index(np.argmax(corr_matrix.values), corr_matrix.shape)
     attr1, attr2 = df.columns[list(strongest_pair)]
-    
     print(f"Using attributes: {attr1} and {attr2} for k-Means clustering.")
-    
-    # Select the two attributes
     data = df[[attr1, attr2]].dropna()
     
-    # Standardize the data
+    # standardize the data
     scaler = StandardScaler()
     scaled_data = scaler.fit_transform(data)
     
-    # Perform k-Means clustering
+    # perform clustering
     kmeans = KMeans(n_clusters=n_clusters, n_init=10)
     data['Cluster'] = kmeans.fit_predict(scaled_data)
     
-    # Visualize the clusters
+    # visualize the clusters
     plt.figure(figsize=(8, 6))
     sns.scatterplot(x=data[attr1], y=data[attr2], hue=data['Cluster'], palette='viridis')
     plt.xlabel(attr1)
@@ -188,10 +184,5 @@ def display_clusters(csv_file, n_clusters=3):
     
     return data
 
-# Example usage
-compute_correlation(engine, 'Flores_Espinar_FactorsInfluencingDiningChoice_Cleaned.csv')
-# clustered_data = display_clusters('Flores_Espinar_FactorsInfluencingDiningChoice.csv', n_clusters=6)
-
-
-
-
+# perform k-means clustering 
+display_clusters('Flores_Espinar_FactorsInfluencingDiningChoice.csv', n_clusters=3)
