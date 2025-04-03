@@ -1,1 +1,0 @@
-INSERT INTO data (RoomType,Capacity,Cost) VALUES ('Single',1,1000);
