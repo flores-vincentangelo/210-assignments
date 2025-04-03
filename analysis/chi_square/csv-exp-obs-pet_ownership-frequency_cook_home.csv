@@ -1,0 +1,10 @@
+Attributes:,pet_ownership,frequency_cook_home
+Degree(s) of freedom:,12
+Critical value:,21.026
+Statistic:,5.17115
+
+,1,,2,,3,,4,,5,,6,,7,,
+,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,
+I don't own a cat/dog,4,4.8,3,3.6,1,1.8,2,1.5,0,0.3,1,0.6,4,2.4,
+I own a cat/dog and bring them when I eat out if I feel like it,2,1.28,1,0.96,1,0.48,0,0.4,0,0.08,0,0.16,0,0.64,
+I own a cat/dog but I DON'T bring them when I eat out,10,9.92,8,7.44,4,3.72,3,3.1,1,0.62,1,1.24,4,4.96,

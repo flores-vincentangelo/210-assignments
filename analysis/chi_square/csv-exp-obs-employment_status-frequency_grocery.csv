@@ -1,0 +1,11 @@
+Attributes:,employment_status,frequency_grocery
+Degree(s) of freedom:,9
+Critical value:,16.919
+Statistic:,25.21987
+
+,1,,2,,3,,4,,
+,obs,exp,obs,exp,obs,exp,obs,exp,
+Full time (Government Sector),0,0.44,0,0.84,2,0.4,0,0.32,
+Full time (Private Sector),6,8.8,20,16.8,7,8.0,7,6.4,
+Self-employed,0,0.22,0,0.42,0,0.2,1,0.16,
+Unemployed,5,1.54,1,2.94,1,1.4,0,1.12,

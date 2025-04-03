@@ -1,0 +1,12 @@
+Attributes:,preferred_dining,frequency_grocery
+Degree(s) of freedom:,12
+Critical value:,21.026
+Statistic:,15.22994
+
+,1,,2,,3,,4,,
+,obs,exp,obs,exp,obs,exp,obs,exp,
+Eating out at Casual Dining Restaurants,1,1.76,5,3.36,2,1.6,0,1.28,
+Eating out at Fast Food Restaurant,0,0.44,2,0.84,0,0.4,0,0.32,
+Eating out at Fine Dining Restaurants,0,0.22,0,0.42,0,0.2,1,0.16,
+Food Delivery,0,0.88,3,1.68,0,0.8,1,0.64,
+Home-Cooked Meals,10,7.7,11,14.7,8,7.0,6,5.6,

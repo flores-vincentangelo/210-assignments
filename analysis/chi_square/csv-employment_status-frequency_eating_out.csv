@@ -1,0 +1,34 @@
+Attributes:,employment_status,frequency_eating_out
+Degree(s) of freedom:,18
+Critical value:,28.869
+Statistic:,23.97713
+
+attribute combination, observed, expected
+Full time (Government Sector) 1,0,0.08
+Full time (Government Sector) 2,0,0.24
+Full time (Government Sector) 3,0,0.32
+Full time (Government Sector) 4,1,0.76
+Full time (Government Sector) 5,0,0.24
+Full time (Government Sector) 6,0,0.12
+Full time (Government Sector) 7,1,0.24
+Full time (Private Sector) 1,1,1.6
+Full time (Private Sector) 2,6,4.8
+Full time (Private Sector) 3,6,6.4
+Full time (Private Sector) 4,16,15.2
+Full time (Private Sector) 5,5,4.8
+Full time (Private Sector) 6,2,2.4
+Full time (Private Sector) 7,4,4.8
+Self-employed 1,0,0.04
+Self-employed 2,0,0.12
+Self-employed 3,0,0.16
+Self-employed 4,0,0.38
+Self-employed 5,0,0.12
+Self-employed 6,1,0.06
+Self-employed 7,0,0.12
+Unemployed 1,1,0.28
+Unemployed 2,0,0.84
+Unemployed 3,2,1.12
+Unemployed 4,2,2.66
+Unemployed 5,1,0.84
+Unemployed 6,0,0.42
+Unemployed 7,1,0.84

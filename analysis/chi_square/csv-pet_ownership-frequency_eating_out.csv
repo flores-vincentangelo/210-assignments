@@ -1,0 +1,27 @@
+Attributes:,pet_ownership,frequency_eating_out
+Degree(s) of freedom:,12
+Critical value:,21.026
+Statistic:,13.61512
+
+attribute combination, observed, expected
+I don't own a cat/dog 1,2,0.6
+I don't own a cat/dog 2,0,1.8
+I don't own a cat/dog 3,4,2.4
+I don't own a cat/dog 4,5,5.7
+I don't own a cat/dog 5,1,1.8
+I don't own a cat/dog 6,2,0.9
+I don't own a cat/dog 7,1,1.8
+I own a cat/dog and bring them when I eat out if I feel like it 1,0,0.16
+I own a cat/dog and bring them when I eat out if I feel like it 2,1,0.48
+I own a cat/dog and bring them when I eat out if I feel like it 3,0,0.64
+I own a cat/dog and bring them when I eat out if I feel like it 4,1,1.52
+I own a cat/dog and bring them when I eat out if I feel like it 5,1,0.48
+I own a cat/dog and bring them when I eat out if I feel like it 6,0,0.24
+I own a cat/dog and bring them when I eat out if I feel like it 7,1,0.48
+I own a cat/dog but I DON'T bring them when I eat out 1,0,1.24
+I own a cat/dog but I DON'T bring them when I eat out 2,5,3.72
+I own a cat/dog but I DON'T bring them when I eat out 3,4,4.96
+I own a cat/dog but I DON'T bring them when I eat out 4,13,11.78
+I own a cat/dog but I DON'T bring them when I eat out 5,4,3.72
+I own a cat/dog but I DON'T bring them when I eat out 6,1,1.86
+I own a cat/dog but I DON'T bring them when I eat out 7,4,3.72

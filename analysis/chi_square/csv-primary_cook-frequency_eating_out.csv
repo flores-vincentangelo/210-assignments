@@ -1,0 +1,27 @@
+Attributes:,primary_cook,frequency_eating_out
+Degree(s) of freedom:,12
+Critical value:,21.026
+Statistic:,13.30288
+
+attribute combination, observed, expected
+I don't cook 1,1,0.6
+I don't cook 2,1,1.8
+I don't cook 3,4,2.4
+I don't cook 4,7,5.7
+I don't cook 5,1,1.8
+I don't cook 6,0,0.9
+I don't cook 7,1,1.8
+No, but I can cook 1,1,1.04
+No, but I can cook 2,4,3.12
+No, but I can cook 3,1,4.16
+No, but I can cook 4,9,9.88
+No, but I can cook 5,3,3.12
+No, but I can cook 6,3,1.56
+No, but I can cook 7,5,3.12
+Yes 1,0,0.36
+Yes 2,1,1.08
+Yes 3,3,1.44
+Yes 4,3,3.42
+Yes 5,2,1.08
+Yes 6,0,0.54
+Yes 7,0,1.08

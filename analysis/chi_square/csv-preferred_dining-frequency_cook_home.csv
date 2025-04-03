@@ -1,0 +1,41 @@
+Attributes:,preferred_dining,frequency_cook_home
+Degree(s) of freedom:,24
+Critical value:,36.415
+Statistic:,27.40997
+
+attribute combination, observed, expected
+Eating out at Casual Dining Restaurants 1,3,2.56
+Eating out at Casual Dining Restaurants 2,3,1.92
+Eating out at Casual Dining Restaurants 3,1,0.96
+Eating out at Casual Dining Restaurants 4,0,0.8
+Eating out at Casual Dining Restaurants 5,0,0.16
+Eating out at Casual Dining Restaurants 6,1,0.32
+Eating out at Casual Dining Restaurants 7,0,1.28
+Eating out at Fast Food Restaurant 1,0,0.64
+Eating out at Fast Food Restaurant 2,0,0.48
+Eating out at Fast Food Restaurant 3,1,0.24
+Eating out at Fast Food Restaurant 4,0,0.2
+Eating out at Fast Food Restaurant 5,0,0.04
+Eating out at Fast Food Restaurant 6,0,0.08
+Eating out at Fast Food Restaurant 7,1,0.32
+Eating out at Fine Dining Restaurants 1,0,0.32
+Eating out at Fine Dining Restaurants 2,0,0.24
+Eating out at Fine Dining Restaurants 3,0,0.12
+Eating out at Fine Dining Restaurants 4,1,0.1
+Eating out at Fine Dining Restaurants 5,0,0.02
+Eating out at Fine Dining Restaurants 6,0,0.04
+Eating out at Fine Dining Restaurants 7,0,0.16
+Food Delivery 1,1,1.28
+Food Delivery 2,0,0.96
+Food Delivery 3,1,0.48
+Food Delivery 4,0,0.4
+Food Delivery 5,0,0.08
+Food Delivery 6,1,0.16
+Food Delivery 7,1,0.64
+Home-Cooked Meals 1,12,11.2
+Home-Cooked Meals 2,9,8.4
+Home-Cooked Meals 3,3,4.2
+Home-Cooked Meals 4,4,3.5
+Home-Cooked Meals 5,1,0.7
+Home-Cooked Meals 6,0,1.4
+Home-Cooked Meals 7,6,5.6

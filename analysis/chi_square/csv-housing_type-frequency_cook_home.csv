@@ -1,0 +1,41 @@
+Attributes:,housing_type,frequency_cook_home
+Degree(s) of freedom:,24
+Critical value:,36.415
+Statistic:,30.17228
+
+attribute combination, observed, expected
+Dormitory 1,0,0.96
+Dormitory 2,0,0.72
+Dormitory 3,0,0.36
+Dormitory 4,0,0.3
+Dormitory 5,0,0.06
+Dormitory 6,1,0.12
+Dormitory 7,2,0.48
+Living with Relatives (not with parents/siblings) 1,3,1.28
+Living with Relatives (not with parents/siblings) 2,0,0.96
+Living with Relatives (not with parents/siblings) 3,0,0.48
+Living with Relatives (not with parents/siblings) 4,0,0.4
+Living with Relatives (not with parents/siblings) 5,0,0.08
+Living with Relatives (not with parents/siblings) 6,0,0.16
+Living with Relatives (not with parents/siblings) 7,1,0.64
+Living with parents/siblings 1,7,5.76
+Living with parents/siblings 2,5,4.32
+Living with parents/siblings 3,1,2.16
+Living with parents/siblings 4,3,1.8
+Living with parents/siblings 5,0,0.36
+Living with parents/siblings 6,0,0.72
+Living with parents/siblings 7,2,2.88
+Own House 1,4,4.16
+Own House 2,3,3.12
+Own House 3,3,1.56
+Own House 4,2,1.3
+Own House 5,0,0.26
+Own House 6,0,0.52
+Own House 7,1,2.08
+Renting 1,2,3.84
+Renting 2,4,2.88
+Renting 3,2,1.44
+Renting 4,0,1.2
+Renting 5,1,0.24
+Renting 6,1,0.48
+Renting 7,2,1.92

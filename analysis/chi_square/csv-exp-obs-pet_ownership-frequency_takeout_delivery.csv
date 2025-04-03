@@ -1,0 +1,10 @@
+Attributes:,pet_ownership,frequency_takeout_delivery
+Degree(s) of freedom:,12
+Critical value:,21.026
+Statistic:,10.38044
+
+,1,,2,,3,,4,,5,,6,,7,,
+,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,
+I don't own a cat/dog,2,0.9,0,0.6,4,3.6,2,3.0,6,4.5,0,0.3,1,2.1,
+I own a cat/dog and bring them when I eat out if I feel like it,0,0.24,0,0.16,0,0.96,2,0.8,2,1.2,0,0.08,0,0.56,
+I own a cat/dog but I DON'T bring them when I eat out,1,1.86,2,1.24,8,7.44,6,6.2,7,9.3,1,0.62,6,4.34,

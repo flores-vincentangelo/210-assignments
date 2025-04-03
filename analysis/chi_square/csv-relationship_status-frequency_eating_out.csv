@@ -1,0 +1,27 @@
+Attributes:,relationship_status,frequency_eating_out
+Degree(s) of freedom:,12
+Critical value:,21.026
+Statistic:,18.24322
+
+attribute combination, observed, expected
+Married 1,0,0.52
+Married 2,3,1.56
+Married 3,1,2.08
+Married 4,3,4.94
+Married 5,5,1.56
+Married 6,1,0.78
+Married 7,0,1.56
+Married but not living together 1,0,0.04
+Married but not living together 2,0,0.12
+Married but not living together 3,0,0.16
+Married but not living together 4,1,0.38
+Married but not living together 5,0,0.12
+Married but not living together 6,0,0.06
+Married but not living together 7,0,0.12
+Single 1,2,1.44
+Single 2,3,4.32
+Single 3,7,5.76
+Single 4,15,13.68
+Single 5,1,4.32
+Single 6,2,2.16
+Single 7,6,4.32

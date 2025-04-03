@@ -1,0 +1,12 @@
+Attributes:,housing_type,frequency_takeout_delivery
+Degree(s) of freedom:,24
+Critical value:,36.415
+Statistic:,31.50183
+
+,1,,2,,3,,4,,5,,6,,7,,
+,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,
+Dormitory,1,0.18,0,0.12,1,0.72,0,0.6,1,0.9,0,0.06,0,0.42,
+Living with Relatives (not with parents/siblings),1,0.24,0,0.16,0,0.96,1,0.8,0,1.2,1,0.08,1,0.56,
+Living with parents/siblings,0,1.08,0,0.72,3,4.32,5,3.6,6,5.4,0,0.36,4,2.52,
+Own House,0,0.78,1,0.52,4,3.12,1,2.6,6,3.9,0,0.26,1,1.82,
+Renting,1,0.72,1,0.48,4,2.88,3,2.4,2,3.6,0,0.24,1,1.68,

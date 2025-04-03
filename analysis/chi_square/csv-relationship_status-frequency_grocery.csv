@@ -1,0 +1,18 @@
+Attributes:,relationship_status,frequency_grocery
+Degree(s) of freedom:,6
+Critical value:,12.592
+Statistic:,5.70221
+
+attribute combination, observed, expected
+Married 1,4,2.86
+Married 2,6,5.46
+Married 3,1,2.6
+Married 4,2,2.08
+Married but not living together 1,0,0.22
+Married but not living together 2,0,0.42
+Married but not living together 3,1,0.2
+Married but not living together 4,0,0.16
+Single 1,7,7.92
+Single 2,15,15.12
+Single 3,8,7.2
+Single 4,6,5.76

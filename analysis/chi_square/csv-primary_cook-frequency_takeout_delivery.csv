@@ -1,0 +1,27 @@
+Attributes:,primary_cook,frequency_takeout_delivery
+Degree(s) of freedom:,12
+Critical value:,21.026
+Statistic:,13.4417
+
+attribute combination, observed, expected
+I don't cook 1,2,0.9
+I don't cook 2,0,0.6
+I don't cook 3,6,3.6
+I don't cook 4,3,3.0
+I don't cook 5,2,4.5
+I don't cook 6,1,0.3
+I don't cook 7,1,2.1
+No, but I can cook 1,1,1.56
+No, but I can cook 2,2,1.04
+No, but I can cook 3,3,6.24
+No, but I can cook 4,6,5.2
+No, but I can cook 5,10,7.8
+No, but I can cook 6,0,0.52
+No, but I can cook 7,4,3.64
+Yes 1,0,0.54
+Yes 2,0,0.36
+Yes 3,3,2.16
+Yes 4,1,1.8
+Yes 5,3,2.7
+Yes 6,0,0.18
+Yes 7,2,1.26
