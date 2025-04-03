@@ -282,10 +282,71 @@ def chi_square_analysis(cat_att_dict):
                 "obs": obs.tolist(),
                 "expected": expected_freq.tolist()
             })
-            if (null_hypothesis == "Reject. Values related"):
-                print(f"{attr1} {attr2} are related!")
     
     return (chi_square_dict, attr_chi_square_list)
+
+
+def create_csvs(chi_square_filepath, figure_path, chi_square_list):
+    for obj in chi_square_list:
+        attr1 = obj["attributes"][0]
+        attr2 = obj["attributes"][1]
+        row_count = len(obj["y_axis"])
+        column_count = len(obj["x_axis"])
+        header = f"Attributes:,{attr1},{attr2}\nDegree(s) of freedom:,{obj["dof"]}\nCritical value:,{obj["critical_value"]}\nStatistic:,{obj["statistic"]}\n"
+
+        value_comb_list = []
+        observed_list = []
+        expected_list = []
+
+        with open(f"{chi_square_filepath}/csv-{attr1}-{attr2}.csv", "w") as f:
+            f.write(header)
+        # f.write("\n,")
+        # for x_axis in obj["x_axis"]:
+        #     f.write(f"{x_axis},,")
+        # f.write("\n,")
+
+        # for x_axis in obj["x_axis"]:
+        #     f.write(f"obs,exp,")
+        # f.write("\n")
+
+            f.write("\n")
+            f.write("attribute combination, observed, expected\n")
+            for i in range(row_count):
+                for j in range(column_count):
+                    observed = obj["obs"][i][j]
+                    expected = obj["expected"][i][j]
+                    value_combination = f"{obj["y_axis"][i]} {obj["x_axis"][j]}"
+                    value_comb_list.append(value_combination)
+                    observed_list.append(observed)
+                    expected_list.append(expected)
+                    f.write(f"{obj["y_axis"][i]} {obj["x_axis"][j]},{observed},{expected}\n")
+    
+        with open(f"{chi_square_filepath}/csv-exp-obs-{attr1}-{attr2}.csv", "w") as f:
+            f.write(header)
+            f.write("\n,")
+            for x_axis in obj["x_axis"]:
+                f.write(f"{x_axis},,")
+            f.write("\n,")
+
+            for x_axis in obj["x_axis"]:
+                f.write(f"obs,exp,")
+            f.write("\n")
+
+            for i in range(row_count):
+                f.write(f"{obj["y_axis"][i]},")
+                for j in range(column_count):
+                    observed = obj["obs"][i][j]
+                    expected = obj["expected"][i][j]
+                    f.write(f"{observed},{expected},")
+                f.write("\n")
+
+        fig, ax = plt.subplots()
+        plt.xticks(rotation=45, ha="right")
+        ax.tick_params(axis='both', labelsize=5)
+        ax.plot(value_comb_list, observed_list, 'o-', linewidth=1)
+        ax.plot(value_comb_list, expected_list, 'o-', linewidth=1)
+        plt.savefig(f"{figure_path}/plot-{attr1}-{attr2}.png")
+        plt.close()
 
         
 chi_square_filepath = "analysis/chi_square"
@@ -303,75 +364,13 @@ with open(f"{chi_square_filepath}/categorical_attr_mappings.json", "w") as f:
 
 (chi_square_dict, chi_square_list) = chi_square_analysis(categorical_attr_mappings)
 
-# with open(f"{chi_square_filepath}/chi_square_dict.json", "w") as f:
-#     f.write(json.dumps(chi_square_dict))
-
 def sorting_function(obj):
     return obj["statistic"]
 chi_square_list.sort(key=sorting_function)
 with open(f"{chi_square_filepath}/chi_square_list.json", "w") as f:
     f.write(json.dumps(chi_square_list))
 
-for obj in chi_square_list:
-    attr1 = obj["attributes"][0]
-    attr2 = obj["attributes"][1]
-    row_count = len(obj["y_axis"])
-    column_count = len(obj["x_axis"])
-    header = f"Attributes:,{attr1},{attr2}\nDegree(s) of freedom:,{obj["dof"]}\nCritical value:,{obj["critical_value"]}\nStatistic:,{obj["statistic"]}\n"
-
-    value_comb_list = []
-    observed_list = []
-    expected_list = []
-
-    with open(f"{chi_square_filepath}/csv-{attr1}-{attr2}.csv", "w") as f:
-        f.write(header)
-        # f.write("\n,")
-        # for x_axis in obj["x_axis"]:
-        #     f.write(f"{x_axis},,")
-        # f.write("\n,")
-
-        # for x_axis in obj["x_axis"]:
-        #     f.write(f"obs,exp,")
-        # f.write("\n")
-
-        f.write("\n")
-        f.write("attribute combination, observed, expected\n")
-        for i in range(row_count):
-            for j in range(column_count):
-                observed = obj["obs"][i][j]
-                expected = obj["expected"][i][j]
-                value_combination = f"{obj["y_axis"][i]} {obj["x_axis"][j]}"
-                value_comb_list.append(value_combination)
-                observed_list.append(observed)
-                expected_list.append(expected)
-                f.write(f"{obj["y_axis"][i]} {obj["x_axis"][j]},{observed},{expected}\n")
-    
-    with open(f"{chi_square_filepath}/csv-exp-obs-{attr1}-{attr2}.csv", "w") as f:
-        f.write(header)
-        f.write("\n,")
-        for x_axis in obj["x_axis"]:
-            f.write(f"{x_axis},,")
-        f.write("\n,")
-
-        for x_axis in obj["x_axis"]:
-            f.write(f"obs,exp,")
-        f.write("\n")
-
-        for i in range(row_count):
-            f.write(f"{obj["y_axis"][i]},")
-            for j in range(column_count):
-                observed = obj["obs"][i][j]
-                expected = obj["expected"][i][j]
-                f.write(f"{observed},{expected},")
-            f.write("\n")
-
-    fig, ax = plt.subplots()
-    plt.xticks(rotation=45, ha="right")
-    ax.tick_params(axis='both', labelsize=5)
-    ax.plot(value_comb_list, observed_list, 'o-', linewidth=1)
-    ax.plot(value_comb_list, expected_list, 'o-', linewidth=1)
-    plt.savefig(f"{figure_path}/plot-{attr1}-{attr2}.png")
-    plt.close()
+create_csvs(chi_square_filepath, figure_path, chi_square_list)
                 
 
 
