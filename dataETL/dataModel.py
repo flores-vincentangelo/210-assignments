@@ -91,6 +91,21 @@ class DataMapping:
     def frequency_2(self, num):
         return self.frequency_2(num)
 
+attribute_column_dict = {
+    "age": "Age",
+    "household_size":"Household Size",
+    "budget_eat_out":"Average budget per person when eating out",
+    "budget_takeout_delivery":"Average budget per person when ordering takeout/delivery",
+    "grocery_cost":"Approximate cost of groceries per month for home cooking",
+    "gender": "Gender",
+    "relationship_status": "",
+    "employment_status": "Relationship Status",
+    "pet_ownership": "Pet Ownership",
+    "housing_type": "Housing type",
+    "primary_cook": "Are you the primary person that prepares meals in the household if any?",
+    "preferred_dining": "Preferred Dining"
+    }
+
 class Cuisine(Base):
     __tablename__ = "cuisine"
 
