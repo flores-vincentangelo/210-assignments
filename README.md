@@ -13,4 +13,4 @@ to open sqlite browser
 TODO:
 ~~pearsons~~
 ~~chisquare~~
-clean data
+~~clean data~~
