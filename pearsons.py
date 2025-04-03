@@ -109,6 +109,10 @@ def pretty_print_pearsons(pearsons_list, to_csv=False, filepath=None):
 def sort_by_statistic(obj):
     return obj["statistic"]
 
+def sort_by_statistic_abs(obj):
+    return abs(obj["statistic"])
+
+
 numerical_attribute_list = [
         "age",
         "household_size",
@@ -119,7 +123,7 @@ numerical_attribute_list = [
 
 numerical_data_dict = get_data(engine, numerical_attribute_list)
 pearsons_list = pearsons_correlation(numerical_data_dict)
-pearsons_list.sort(key=sort_by_statistic, reverse=True)
+pearsons_list.sort(key=sort_by_statistic_abs, reverse=True)
 pretty_print_pearsons(pearsons_list, to_csv=True, filepath=f"{analysis_path}/pearsons_list.csv")
 
 for attr in numerical_data_dict.keys():

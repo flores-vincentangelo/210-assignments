@@ -380,6 +380,9 @@ def pretty_print_chi_square(chi_square_list, to_csv=False):
 def sort_by_statistic(obj):
     return obj["statistic"]
 
+def sort_by_statistic_abs(obj):
+    return abs(obj["statistic"])
+
 def sort_by_null_hypothesis(obj):
     return obj["null_hypothesis"]
 
@@ -410,7 +413,7 @@ def compute_correlation(engine):
         # compute correlations
         pearsons_list = pearsons_correlation(numerical_data_dict)
         # sort attribute pairs according to correlation, rank 1 being the largest correlation factor
-        pearsons_list.sort(key=sort_by_statistic, reverse=True)
+        pearsons_list.sort(key=sort_by_statistic_abs, reverse=True)
         # print to console
         pretty_print_pearsons(pearsons_list)
 
