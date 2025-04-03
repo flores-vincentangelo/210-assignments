@@ -1,0 +1,12 @@
+Attributes:,gender,relationship_status
+Degree(s) of freedom:,2
+Critical value:,5.991
+Statistic:,1.18803
+
+attribute combination, observed, expected
+Female Married,7,6.5
+Female Married but not living together,1,0.5
+Female Single,17,18.0
+Male Married,6,6.5
+Male Married but not living together,0,0.5
+Male Single,19,18.0

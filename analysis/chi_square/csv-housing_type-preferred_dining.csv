@@ -1,0 +1,31 @@
+Attributes:,housing_type,preferred_dining
+Degree(s) of freedom:,16
+Critical value:,26.296
+Statistic:,19.19376
+
+attribute combination, observed, expected
+Dormitory Eating out at Casual Dining Restaurants,1,0.48
+Dormitory Eating out at Fast Food Restaurant,0,0.12
+Dormitory Eating out at Fine Dining Restaurants,0,0.06
+Dormitory Food Delivery,0,0.24
+Dormitory Home-Cooked Meals,2,2.1
+Living with Relatives (not with parents/siblings) Eating out at Casual Dining Restaurants,0,0.64
+Living with Relatives (not with parents/siblings) Eating out at Fast Food Restaurant,1,0.16
+Living with Relatives (not with parents/siblings) Eating out at Fine Dining Restaurants,0,0.08
+Living with Relatives (not with parents/siblings) Food Delivery,0,0.32
+Living with Relatives (not with parents/siblings) Home-Cooked Meals,3,2.8
+Living with parents/siblings Eating out at Casual Dining Restaurants,2,2.88
+Living with parents/siblings Eating out at Fast Food Restaurant,0,0.72
+Living with parents/siblings Eating out at Fine Dining Restaurants,0,0.36
+Living with parents/siblings Food Delivery,0,1.44
+Living with parents/siblings Home-Cooked Meals,16,12.6
+Own House Eating out at Casual Dining Restaurants,2,2.08
+Own House Eating out at Fast Food Restaurant,1,0.52
+Own House Eating out at Fine Dining Restaurants,1,0.26
+Own House Food Delivery,1,1.04
+Own House Home-Cooked Meals,8,9.1
+Renting Eating out at Casual Dining Restaurants,3,1.92
+Renting Eating out at Fast Food Restaurant,0,0.48
+Renting Eating out at Fine Dining Restaurants,0,0.24
+Renting Food Delivery,3,0.96
+Renting Home-Cooked Meals,6,8.4

@@ -1,0 +1,12 @@
+Attributes:,gender,pet_ownership
+Degree(s) of freedom:,2
+Critical value:,5.991
+Statistic:,1.09892
+
+attribute combination, observed, expected
+Female I don't own a cat/dog,8,7.5
+Female I own a cat/dog and bring them when I eat out if I feel like it,1,2.0
+Female I own a cat/dog but I DON'T bring them when I eat out,16,15.5
+Male I don't own a cat/dog,7,7.5
+Male I own a cat/dog and bring them when I eat out if I feel like it,3,2.0
+Male I own a cat/dog but I DON'T bring them when I eat out,15,15.5

@@ -1,0 +1,21 @@
+Attributes:,relationship_status,housing_type
+Degree(s) of freedom:,8
+Critical value:,15.507
+Statistic:,23.26708
+
+attribute combination, observed, expected
+Married Dormitory,0,0.78
+Married Living with Relatives (not with parents/siblings),0,1.04
+Married Living with parents/siblings,1,4.68
+Married Own House,9,3.38
+Married Renting,3,3.12
+Married but not living together Dormitory,0,0.06
+Married but not living together Living with Relatives (not with parents/siblings),0,0.08
+Married but not living together Living with parents/siblings,0,0.36
+Married but not living together Own House,1,0.26
+Married but not living together Renting,0,0.24
+Single Dormitory,3,2.16
+Single Living with Relatives (not with parents/siblings),4,2.88
+Single Living with parents/siblings,17,12.96
+Single Own House,3,9.36
+Single Renting,9,8.64

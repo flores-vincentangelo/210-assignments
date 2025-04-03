@@ -1,0 +1,18 @@
+Attributes:,employment_status,pet_ownership
+Degree(s) of freedom:,6
+Critical value:,12.592
+Statistic:,3.03687
+
+attribute combination, observed, expected
+Full time (Government Sector) I don't own a cat/dog,0,0.6
+Full time (Government Sector) I own a cat/dog and bring them when I eat out if I feel like it,0,0.16
+Full time (Government Sector) I own a cat/dog but I DON'T bring them when I eat out,2,1.24
+Full time (Private Sector) I don't own a cat/dog,12,12.0
+Full time (Private Sector) I own a cat/dog and bring them when I eat out if I feel like it,4,3.2
+Full time (Private Sector) I own a cat/dog but I DON'T bring them when I eat out,24,24.8
+Self-employed I don't own a cat/dog,0,0.3
+Self-employed I own a cat/dog and bring them when I eat out if I feel like it,0,0.08
+Self-employed I own a cat/dog but I DON'T bring them when I eat out,1,0.62
+Unemployed I don't own a cat/dog,3,2.1
+Unemployed I own a cat/dog and bring them when I eat out if I feel like it,0,0.56
+Unemployed I own a cat/dog but I DON'T bring them when I eat out,4,4.34

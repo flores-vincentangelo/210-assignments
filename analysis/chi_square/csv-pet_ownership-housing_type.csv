@@ -1,0 +1,21 @@
+Attributes:,pet_ownership,housing_type
+Degree(s) of freedom:,8
+Critical value:,15.507
+Statistic:,11.753
+
+attribute combination, observed, expected
+I don't own a cat/dog Dormitory,3,0.9
+I don't own a cat/dog Living with Relatives (not with parents/siblings),2,1.2
+I don't own a cat/dog Living with parents/siblings,3,5.4
+I don't own a cat/dog Own House,2,3.9
+I don't own a cat/dog Renting,5,3.6
+I own a cat/dog and bring them when I eat out if I feel like it Dormitory,0,0.24
+I own a cat/dog and bring them when I eat out if I feel like it Living with Relatives (not with parents/siblings),0,0.32
+I own a cat/dog and bring them when I eat out if I feel like it Living with parents/siblings,2,1.44
+I own a cat/dog and bring them when I eat out if I feel like it Own House,1,1.04
+I own a cat/dog and bring them when I eat out if I feel like it Renting,1,0.96
+I own a cat/dog but I DON'T bring them when I eat out Dormitory,0,1.86
+I own a cat/dog but I DON'T bring them when I eat out Living with Relatives (not with parents/siblings),2,2.48
+I own a cat/dog but I DON'T bring them when I eat out Living with parents/siblings,13,11.16
+I own a cat/dog but I DON'T bring them when I eat out Own House,10,8.06
+I own a cat/dog but I DON'T bring them when I eat out Renting,6,7.44

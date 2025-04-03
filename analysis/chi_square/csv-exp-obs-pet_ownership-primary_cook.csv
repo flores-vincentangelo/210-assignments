@@ -1,0 +1,10 @@
+Attributes:,pet_ownership,primary_cook
+Degree(s) of freedom:,4
+Critical value:,9.488
+Statistic:,1.37338
+
+,I don't cook,,No, but I can cook,,Yes,,
+,obs,exp,obs,exp,obs,exp,
+I don't own a cat/dog,5,4.5,7,7.8,3,2.7,
+I own a cat/dog and bring them when I eat out if I feel like it,1,1.2,3,2.08,0,0.72,
+I own a cat/dog but I DON'T bring them when I eat out,9,9.3,16,16.12,6,5.58,

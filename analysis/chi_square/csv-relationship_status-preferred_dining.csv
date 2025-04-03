@@ -1,0 +1,21 @@
+Attributes:,relationship_status,preferred_dining
+Degree(s) of freedom:,8
+Critical value:,15.507
+Statistic:,5.61355
+
+attribute combination, observed, expected
+Married Eating out at Casual Dining Restaurants,2,2.08
+Married Eating out at Fast Food Restaurant,1,0.52
+Married Eating out at Fine Dining Restaurants,1,0.26
+Married Food Delivery,2,1.04
+Married Home-Cooked Meals,7,9.1
+Married but not living together Eating out at Casual Dining Restaurants,0,0.16
+Married but not living together Eating out at Fast Food Restaurant,0,0.04
+Married but not living together Eating out at Fine Dining Restaurants,0,0.02
+Married but not living together Food Delivery,0,0.08
+Married but not living together Home-Cooked Meals,1,0.7
+Single Eating out at Casual Dining Restaurants,6,5.76
+Single Eating out at Fast Food Restaurant,1,1.44
+Single Eating out at Fine Dining Restaurants,0,0.72
+Single Food Delivery,2,2.88
+Single Home-Cooked Meals,27,25.2

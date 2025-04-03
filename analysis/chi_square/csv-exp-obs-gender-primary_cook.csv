@@ -1,0 +1,9 @@
+Attributes:,gender,primary_cook
+Degree(s) of freedom:,2
+Critical value:,5.991
+Statistic:,1.3265
+
+,I don't cook,,No, but I can cook,,Yes,,
+,obs,exp,obs,exp,obs,exp,
+Female,9,7.5,11,13.0,5,4.5,
+Male,6,7.5,15,13.0,4,4.5,

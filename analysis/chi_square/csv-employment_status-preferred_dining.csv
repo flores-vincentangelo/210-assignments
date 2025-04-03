@@ -1,0 +1,26 @@
+Attributes:,employment_status,preferred_dining
+Degree(s) of freedom:,12
+Critical value:,21.026
+Statistic:,13.79401
+
+attribute combination, observed, expected
+Full time (Government Sector) Eating out at Casual Dining Restaurants,0,0.32
+Full time (Government Sector) Eating out at Fast Food Restaurant,0,0.08
+Full time (Government Sector) Eating out at Fine Dining Restaurants,0,0.04
+Full time (Government Sector) Food Delivery,0,0.16
+Full time (Government Sector) Home-Cooked Meals,2,1.4
+Full time (Private Sector) Eating out at Casual Dining Restaurants,7,6.4
+Full time (Private Sector) Eating out at Fast Food Restaurant,2,1.6
+Full time (Private Sector) Eating out at Fine Dining Restaurants,1,0.8
+Full time (Private Sector) Food Delivery,2,3.2
+Full time (Private Sector) Home-Cooked Meals,28,28.0
+Self-employed Eating out at Casual Dining Restaurants,0,0.16
+Self-employed Eating out at Fast Food Restaurant,0,0.04
+Self-employed Eating out at Fine Dining Restaurants,0,0.02
+Self-employed Food Delivery,1,0.08
+Self-employed Home-Cooked Meals,0,0.7
+Unemployed Eating out at Casual Dining Restaurants,1,1.12
+Unemployed Eating out at Fast Food Restaurant,0,0.28
+Unemployed Eating out at Fine Dining Restaurants,0,0.14
+Unemployed Food Delivery,1,0.56
+Unemployed Home-Cooked Meals,5,4.9

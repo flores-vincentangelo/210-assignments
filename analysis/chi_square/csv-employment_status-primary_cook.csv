@@ -1,0 +1,18 @@
+Attributes:,employment_status,primary_cook
+Degree(s) of freedom:,6
+Critical value:,12.592
+Statistic:,2.27732
+
+attribute combination, observed, expected
+Full time (Government Sector) I don't cook,1,0.6
+Full time (Government Sector) No, but I can cook,1,1.04
+Full time (Government Sector) Yes,0,0.36
+Full time (Private Sector) I don't cook,11,12.0
+Full time (Private Sector) No, but I can cook,21,20.8
+Full time (Private Sector) Yes,8,7.2
+Self-employed I don't cook,0,0.3
+Self-employed No, but I can cook,1,0.52
+Self-employed Yes,0,0.18
+Unemployed I don't cook,3,2.1
+Unemployed No, but I can cook,3,3.64
+Unemployed Yes,1,1.26

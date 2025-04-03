@@ -1,0 +1,10 @@
+Attributes:,relationship_status,housing_type
+Degree(s) of freedom:,8
+Critical value:,15.507
+Statistic:,23.26708
+
+,Dormitory,,Living with Relatives (not with parents/siblings),,Living with parents/siblings,,Own House,,Renting,,
+,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,
+Married,0,0.78,0,1.04,1,4.68,9,3.38,3,3.12,
+Married but not living together,0,0.06,0,0.08,0,0.36,1,0.26,0,0.24,
+Single,3,2.16,4,2.88,17,12.96,3,9.36,9,8.64,
