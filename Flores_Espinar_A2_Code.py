@@ -25,26 +25,6 @@ analysis_path = "analysis/pearsons"
 if not os.path.exists(analysis_path):
     os.makedirs(analysis_path)
 
-# function to compute correlation coefficient
-def compute_correlation(csv_file):
-    try:
-    	# import the csv file
-        df = pd.read_csv(csv_file, skiprows=0, usecols=[2, 9, 12])
-
-        # compute the pearson correlation coefficient
-        correlation = df.corr(method='pearson')
-
-        correlation1 = correlation.iloc[0, 1] # correlation of age and household size
-        correlation2 = correlation.iloc[0, 2] # correlation of age and average budget per person when eating out
-
-        print(correlation1)
-        print(correlation2)
-
-    except FileNotFoundError:
-        print(f"Error: The file '{csv_file}' was not found.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
 def get_data(engine):
 
     numerical_attribute_dict = {
@@ -55,7 +35,9 @@ def get_data(engine):
         "grocery_cost": [],
     }
 
+    # use sqlalchemy ORM to run query
     with Session(engine) as session:
+        # selecting all respondents
         query = select(Respondents)
         for respondent in session.scalars(query):
             numerical_attribute_dict["age"].append(respondent.age)
@@ -67,16 +49,27 @@ def get_data(engine):
 
 def pearsons_correlation(data_dict):
     numerical_attribute_dict = data_dict
+    
+    # this dictionary is to log which pair of analyses have been done
     pearsons_dict = {}
+
+    # list of all analyses
     pearsons_list = []
 
+    # loop through twice to get each pair of correlation
     for attr1 in numerical_attribute_dict.keys():
         pearsons_dict[attr1] = {}
         for attr2 in numerical_attribute_dict.keys():
+            # skip getting of correlation when attributes are the same
             if attr1 == attr2:
                 continue
+            
+            # this condition is to prevent computing the same pair of attributes twice.
+            # ex. age household_size <==> household_size age pair 
             elif attr2 in pearsons_dict:
                 continue;
+            
+            # get pearson correlation using scipy library
             res = stats.pearsonr(numerical_attribute_dict[attr1], numerical_attribute_dict[attr2])
             pearsons_dict[attr1][attr2] = round(res.statistic, 2)
             pearsons_list.append({
@@ -113,6 +106,44 @@ def pretty_print(pearsons_list, to_csv=False):
 
 def sorting_function(obj):
     return obj["statistic"]
+
+
+
+
+# function to compute correlation coefficient
+def compute_correlation(engine, csv_file):
+    try:
+
+        # read data from database
+        numerical_data_dict = get_data(engine)
+        # compute correlations
+        pearsons_list = pearsons_correlation(numerical_data_dict)
+        # sort attribute pairs according to correlation, rank 1 being the largest correlation factor
+        pearsons_list.sort(key=sorting_function, reverse=True)
+        # print to console
+        pretty_print(pearsons_list)
+
+
+
+
+
+    	# import the csv file
+        # df = pd.read_csv(csv_file, skiprows=0, usecols=[2, 9, 12])
+
+        # compute the pearson correlation coefficient
+        # correlation = df.corr(method='pearson')
+
+        # correlation1 = correlation.iloc[0, 1] # correlation of age and household size
+        # correlation2 = correlation.iloc[0, 2] # correlation of age and average budget per person when eating out
+
+        # print(correlation1)
+        # print(correlation2)
+
+    except FileNotFoundError:
+        print(f"Error: The file '{csv_file}' was not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 
 def display_clusters(csv_file, n_clusters=3):
     # Load dataset
@@ -158,12 +189,9 @@ def display_clusters(csv_file, n_clusters=3):
     return data
 
 # Example usage
-# compute_correlation('Flores_Espinar_FactorsInfluencingDiningChoice_Cleaned.csv')
+compute_correlation(engine, 'Flores_Espinar_FactorsInfluencingDiningChoice_Cleaned.csv')
 # clustered_data = display_clusters('Flores_Espinar_FactorsInfluencingDiningChoice.csv', n_clusters=6)
 
-numerical_data_dict = get_data(engine)
-pearsons_list = pearsons_correlation(numerical_data_dict)
-pearsons_list.sort(key=sorting_function, reverse=True)
-pretty_print(pearsons_list)
+
 
 
