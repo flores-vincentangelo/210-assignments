@@ -178,5 +178,5 @@ cython_debug/
 #excel temp files
 ~$*
 
-./analysis/*
-./figures/*
+analysis/*
+figures/*
