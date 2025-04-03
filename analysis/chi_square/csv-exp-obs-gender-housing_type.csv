@@ -1,9 +1,0 @@
-Attributes:,gender,housing_type
-Degree(s) of freedom:,4
-Critical value:,9.488
-Statistic:,3.63248
-
-,Dormitory,,Living with Relatives (not with parents/siblings),,Living with parents/siblings,,Own House,,Renting,,
-,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,
-Female,0,1.5,2,2.0,10,9.0,6,6.5,7,6.0,
-Male,3,1.5,2,2.0,8,9.0,7,6.5,5,6.0,

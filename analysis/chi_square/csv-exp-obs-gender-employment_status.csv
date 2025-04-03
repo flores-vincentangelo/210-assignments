@@ -1,9 +1,0 @@
-Attributes:,gender,employment_status
-Degree(s) of freedom:,3
-Critical value:,7.815
-Statistic:,3.24286
-
-,Full time (Government Sector),,Full time (Private Sector),,Self-employed,,Unemployed,,
-,obs,exp,obs,exp,obs,exp,obs,exp,
-Female,2,1.0,19,20.0,1,0.5,3,3.5,
-Male,0,1.0,21,20.0,0,0.5,4,3.5,

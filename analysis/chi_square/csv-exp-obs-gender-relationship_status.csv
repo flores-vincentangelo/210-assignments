@@ -1,9 +1,0 @@
-Attributes:,gender,relationship_status
-Degree(s) of freedom:,2
-Critical value:,5.991
-Statistic:,1.18803
-
-,Married,,Married but not living together,,Single,,
-,obs,exp,obs,exp,obs,exp,
-Female,7,6.5,1,0.5,17,18.0,
-Male,6,6.5,0,0.5,19,18.0,

@@ -1,9 +1,0 @@
-Attributes:,gender,frequency_eating_out
-Degree(s) of freedom:,6
-Critical value:,12.592
-Statistic:,4.64035
-
-,1,,2,,3,,4,,5,,6,,7,,
-,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,
-Female,1,1.0,3,3.0,5,4.0,8,9.5,3,3.0,3,1.5,2,3.0,
-Male,1,1.0,3,3.0,3,4.0,11,9.5,3,3.0,0,1.5,4,3.0,

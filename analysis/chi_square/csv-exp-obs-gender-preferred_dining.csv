@@ -1,9 +1,0 @@
-Attributes:,gender,preferred_dining
-Degree(s) of freedom:,4
-Critical value:,9.488
-Statistic:,3.52857
-
-,Eating out at Casual Dining Restaurants,,Eating out at Fast Food Restaurant,,Eating out at Fine Dining Restaurants,,Food Delivery,,Home-Cooked Meals,,
-,obs,exp,obs,exp,obs,exp,obs,exp,obs,exp,
-Female,3,4.0,2,1.0,1,0.5,2,2.0,17,17.5,
-Male,5,4.0,0,1.0,0,0.5,2,2.0,18,17.5,
