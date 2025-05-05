@@ -1,0 +1,70 @@
+X_test
+[[1. 1. 2. 2.]
+ [2. 1. 2. 2.]
+ [2. 2. 2. 2.]
+ [2. 2. 2. 2.]
+ [1. 1. 2. 2.]
+ [2. 2. 2. 2.]
+ [2. 2. 2. 0.]
+ [2. 2. 0. 2.]
+ [2. 1. 0. 3.]
+ [2. 1. 2. 1.]
+ [1. 1. 2. 2.]
+ [2. 2. 0. 3.]
+ [2. 2. 2. 2.]
+ [1. 0. 2. 2.]
+ [2. 2. 0. 3.]]
+y_test
+[4 4 4 4 4 4 4 4 4 4 4 4 4 0 4]
+y_pred
+[4 4 4 4 4 4 4 4 4 4 4 4 4 4 4]
+model accuracy = 0.9333333333333333
+y re-encoded ['Home-Cooked Meals' 'Home-Cooked Meals' 'Home-Cooked Meals'
+ 'Home-Cooked Meals' 'Home-Cooked Meals' 'Home-Cooked Meals'
+ 'Home-Cooked Meals' 'Home-Cooked Meals' 'Home-Cooked Meals'
+ 'Home-Cooked Meals' 'Home-Cooked Meals' 'Home-Cooked Meals'
+ 'Home-Cooked Meals' 'Eating out at Casual Dining Restaurants'
+ 'Home-Cooked Meals']
+[1.0, 1.0, 2.0, 2.0]
+Test ['medium' 'medium' 'Single' 'Living with parents/siblings']
+Home-Cooked Meals 33 0.69
+preffered dining is Home-Cooked Meals and budget_takeout is medium count is 11 probability 0.33
+preffered dining is Home-Cooked Meals and budget_eat_out is medium count is 14 probability 0.42
+preffered dining is Home-Cooked Meals and relationship_status is Single count is 27 probability 0.82
+preffered dining is Home-Cooked Meals and housing_type is Living with parents/siblings count is 16 probability 0.48
+p_x_c 0.0561
+probability of Home-Cooked Meals given [[1.0, 1.0, 2.0, 2.0]] 0.03857
+
+Food Delivery 4 0.08
+preffered dining is Food Delivery and budget_takeout is medium count is 1 probability 0.25
+preffered dining is Food Delivery and budget_eat_out is medium count is 2 probability 0.5
+preffered dining is Food Delivery and relationship_status is Single count is 2 probability 0.5
+preffered dining is Food Delivery and housing_type is Living with parents/siblings count is 0 probability 0.0
+p_x_c 0.0
+probability of Food Delivery given [[1.0, 1.0, 2.0, 2.0]] 0.0
+
+Eating out at Casual Dining Restaurants 8 0.17
+preffered dining is Eating out at Casual Dining Restaurants and budget_takeout is medium count is 3 probability 0.38
+preffered dining is Eating out at Casual Dining Restaurants and budget_eat_out is medium count is 3 probability 0.38
+preffered dining is Eating out at Casual Dining Restaurants and relationship_status is Single count is 6 probability 0.75
+preffered dining is Eating out at Casual Dining Restaurants and housing_type is Living with parents/siblings count is 2 probability 0.25
+p_x_c 0.02637
+probability of Eating out at Casual Dining Restaurants given [[1.0, 1.0, 2.0, 2.0]] 0.00439
+
+Eating out at Fine Dining Restaurants 1 0.02
+preffered dining is Eating out at Fine Dining Restaurants and budget_takeout is medium count is 0 probability 0.0
+preffered dining is Eating out at Fine Dining Restaurants and budget_eat_out is medium count is 0 probability 0.0
+preffered dining is Eating out at Fine Dining Restaurants and relationship_status is Single count is 0 probability 0.0
+preffered dining is Eating out at Fine Dining Restaurants and housing_type is Living with parents/siblings count is 0 probability 0.0
+p_x_c 0.0
+probability of Eating out at Fine Dining Restaurants given [[1.0, 1.0, 2.0, 2.0]] 0.0
+
+Eating out at Fast Food Restaurant 2 0.04
+preffered dining is Eating out at Fast Food Restaurant and budget_takeout is medium count is 0 probability 0.0
+preffered dining is Eating out at Fast Food Restaurant and budget_eat_out is medium count is 0 probability 0.0
+preffered dining is Eating out at Fast Food Restaurant and relationship_status is Single count is 1 probability 0.5
+preffered dining is Eating out at Fast Food Restaurant and housing_type is Living with parents/siblings count is 0 probability 0.0
+p_x_c 0.0
+probability of Eating out at Fast Food Restaurant given [[1.0, 1.0, 2.0, 2.0]] 0.0
+
+highest probability 0.03856749311294766

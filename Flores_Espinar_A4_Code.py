@@ -32,10 +32,12 @@ def get_data():
         'Housing type': "housing_type",
         'Preferred Type of Dining': "preferred_dining"
     }
-    df = pd.read_csv('Flores_Espinar_FactorsInfluencingDiningChoice.csv', header=0, usecols=column_dict.keys())
-    df.rename(columns=column_dict, inplace=True)
-    print(df) 
+    df = pd.read_csv('Flores_Espinar_FactorsInfluencingDiningChoice.csv', usecols=[*range(1, 19)])
+    # df.rename(columns=column_dict, inplace=True)
+    print(df.columns) 
     return df
+
+get_data()
 
 def bin_and_remove_outliers(X):
     bins = [-np.inf, 375, 750, 1125, 1500]
@@ -215,6 +217,6 @@ def knn_confusion():
     plt.tight_layout()
     plt.show()
 
-naive_bayes_analysis()
-knn_classifier()
-knn_confusion()
+# naive_bayes_analysis()
+# knn_classifier()
+# knn_confusion()
